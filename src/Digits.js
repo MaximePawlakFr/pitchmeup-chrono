@@ -3,10 +3,6 @@ import React, { Component } from "react";
 class Digits extends Component {
   constructor() {
     super();
-    this.state = {
-      minutes: 0,
-      seconds: 0
-    };
   }
 
   show2DigitsNumber(number) {
@@ -17,9 +13,8 @@ class Digits extends Component {
   render() {
     return (
       <div>
-        {this.show2DigitsNumber(this.props.minutes)}:{this.show2DigitsNumber(
-          this.props.seconds
-        )}
+        {this.show2DigitsNumber(this.props.minutes)}:
+        {this.show2DigitsNumber(this.props.seconds)}
       </div>
     );
   }
