@@ -1,6 +1,7 @@
 {
   "name": "pitchmeup-chrono",
   "version": "0.1.0",
+  "homepage": "https://maximepawlakfr.github.io/pitchmeup-chrono",
   "private": true,
   "dependencies": {
     "react": "^16.4.2",
