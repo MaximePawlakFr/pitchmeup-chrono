@@ -1,0 +1,23 @@
+.flexbox-form{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.flexbox-pack{
+  display: flex;
+  justify-content: center;
+}
+
+
+.flex-auto{
+  flex:auto;
+}
+
+.w-4 {
+  width: 4rem;
+}
+
+.min-w-6{
+  min-width: 6rem;
+}
