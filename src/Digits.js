@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./Digits.css";
 
 class Digits extends Component {
   constructor() {
@@ -12,7 +13,7 @@ class Digits extends Component {
 
   render() {
     return (
-      <div>
+      <div className="full-width">
         {this.show2DigitsNumber(this.props.minutes)}:
         {this.show2DigitsNumber(this.props.seconds)}
       </div>

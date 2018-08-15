@@ -8,8 +8,8 @@ class App extends Component {
     super();
     this.state = {
       startAt: 0,
-      startMinutes: 0,
-      startSeconds: 0
+      minutes: 5,
+      seconds: 0
     };
     this.timer = this.timer.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -37,14 +37,11 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.countdown);
+    this.reset();
   }
 
   handleDigitsChange(digits) {
-    this.setState({
-      startMinutes: digits.minutes,
-      startSeconds: digits.seconds
-    });
+    // TODO
   }
 
   handleFormSubmit(duration) {
@@ -65,16 +62,11 @@ class App extends Component {
 
   reset() {
     this.handleStop();
-
-    this.setState({
-      minutes: this.state.startMinutes,
-      seconds: this.state.startSeconds
-    });
   }
 
   render() {
     return (
-      <div>
+      <div className="flexbox-container">
         <Digits minutes={this.state.minutes} seconds={this.state.seconds} />
         <DigitForm
           onSubmit={this.handleFormSubmit}
