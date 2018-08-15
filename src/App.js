@@ -3,6 +3,7 @@ import "./App.css";
 import Digits from "./Digits";
 import DigitForm from "./DigitForm";
 import Time from "./Time";
+import FirebaseHelper from "./FirebaseHelper";
 
 class App extends Component {
   constructor() {
@@ -17,7 +18,11 @@ class App extends Component {
     this.handleStart = this.handleStart.bind(this);
     this.handleDigitsChange = this.handleDigitsChange.bind(this);
     this.handleStop = this.handleStop.bind(this);
+    this.handleConnect = this.handleConnect.bind(this);
+    this.chronoNameInput = React.createRef();
     this.reset = this.reset.bind(this);
+    this.startFromStore = this.startFromStore.bind(this);
+    this.unsubscribe = null;
   }
 
   timer(duration) {
@@ -65,6 +70,34 @@ class App extends Component {
     this.countdown = clearInterval(this.countdown);
   }
 
+  async startFromStore(data) {
+    console.log("startFromStore", data);
+    this.reset();
+    const now = await Time.getUTCTime();
+    const localNow = Date.now();
+    const diffTime = localNow - now;
+    const fStartAt =
+      data.public.startAt.seconds * 1000 +
+      data.public.startAt.nanoseconds / 1000;
+    console.log(fStartAt);
+    console.log(localNow);
+
+    this.setState({ startAt: fStartAt, diffTime });
+    this.countdown = setInterval(() => {
+      this.timer(data.public.duration);
+    }, 200);
+  }
+
+  handleConnect(event) {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+    event.preventDefault();
+    const name = this.chronoNameInput.current.value;
+    console.log("Connect: ", name);
+    this.unsubscribe = FirebaseHelper.findChrono(name, this.startFromStore);
+  }
+
   reset() {
     this.handleStop();
   }
@@ -86,6 +119,21 @@ class App extends Component {
             minutes={10}
             seconds={0}
           />
+        </div>
+        <div>
+          <form onSubmit={this.handleConnect}>
+            <input
+              type="text"
+              ref={this.chronoNameInput}
+              placeholder="Chrono name..."
+            />
+            <button type="submit">Connect</button>
+          </form>
+          <form>
+            <input type="text" placeholder="Chrono name..." />
+            <input type="text" placeholder="master password" />
+            <button type="submit">Master a new chrono</button>
+          </form>
         </div>
       </div>
     );
