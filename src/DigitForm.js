@@ -4,75 +4,56 @@ import "./DigitForm.css";
 class DigitForm extends Component {
   constructor() {
     super();
-    this.state = {
-      minutes: 5,
-      seconds: 0
-    };
-
-    this.handleMinutesChange = this.handleMinutesChange.bind(this);
-    this.handleSecondsChange = this.handleSecondsChange.bind(this);
+    this.minutesInput = React.createRef();
+    this.secondsInput = React.createRef();
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.countdown);
   }
 
   handleFormSubmit(event) {
     event.preventDefault();
-    const duration = this.state.minutes * 60 + this.state.seconds;
+    const minutes = parseInt(this.minutesInput.current.value * 60, 10);
+    const seconds = parseInt(this.secondsInput.current.value, 10);
+    const duration = minutes + seconds;
     this.props.onSubmit(duration);
-  }
-
-  handleMinutesChange(event) {
-    const minutes = parseInt(event.target.value, 10);
-    this.setState({ minutes });
-    this.props.onDigitsChange({ minutes, seconds: this.state.seconds });
-  }
-
-  handleSecondsChange(event) {
-    const seconds = parseInt(event.target.value, 10);
-    this.setState({ seconds });
-    this.props.onDigitsChange({
-      minutes: this.state.minutes,
-      seconds
-    });
   }
 
   render() {
     return (
-      <form className="flexbox-form" onSubmit={this.handleFormSubmit}>
+      <form
+        className="flexbox-form center-inputs"
+        onSubmit={this.handleFormSubmit}
+      >
         <div className="flexbox-pack">
           <input
-            className="w-4"
+            className="w-4 min-h-inputs"
             type="number"
             name="minutes"
             placeholder="minutes"
             min="0"
             max="59"
-            value={this.state.minutes}
-            onChange={this.handleMinutesChange}
+            ref={this.minutesInput}
+            defaultValue={this.props.minutes}
           />
           :
           <input
-            className="w-4"
+            className="w-4 min-h-inputs"
             type="number"
             name="seconds"
             placeholder="seconds"
             min="0"
             max="59"
-            value={this.state.seconds}
-            onChange={this.handleSecondsChange}
+            ref={this.secondsInput}
+            defaultValue={this.props.seconds}
           />
         </div>
         <div className="flex-auto flexbox-pack">
-          <button type="submit" className="flex-auto min-w-15wh min-h-15vh">
+          <button type="submit" className="flex-auto min-w-15wh min-h-controls">
             Start
           </button>
           <button
             type="button"
             onClick={this.props.onStop}
-            className="flex-auto min-w-15wh min-h-15vh"
+            className="flex-auto min-w-15wh min-h-controls"
           >
             Stop
           </button>

@@ -7,6 +7,11 @@
 .flexbox-pack{
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+.center-inputs input {
+  text-align: center;
 }
 
 
@@ -18,8 +23,12 @@
   width: 4rem;
 }
 
-.min-h-15vh {
-  min-height: 15vh;
+.min-h-inputs {
+  min-height: 5vh;
+}
+
+.min-h-controls {
+  min-height: 7vh;
 }
 
 .min-w-15wh{

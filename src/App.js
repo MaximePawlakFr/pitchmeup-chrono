@@ -68,11 +68,20 @@ class App extends Component {
     return (
       <div className="flexbox-container">
         <Digits minutes={this.state.minutes} seconds={this.state.seconds} />
-        <DigitForm
-          onSubmit={this.handleFormSubmit}
-          onStop={this.handleStop}
-          onDigitsChange={this.handleDigitsChange}
-        />
+        <div>
+          <DigitForm
+            onSubmit={this.handleFormSubmit}
+            onStop={this.handleStop}
+            minutes={5}
+            seconds={0}
+          />
+          <DigitForm
+            onSubmit={this.handleFormSubmit}
+            onStop={this.handleStop}
+            minutes={10}
+            seconds={0}
+          />
+        </div>
       </div>
     );
   }
