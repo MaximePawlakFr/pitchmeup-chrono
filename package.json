@@ -1,17 +1,21 @@
 {
   "name": "pitchmeup-chrono",
   "version": "0.1.0",
-  "homepage": "https://maximepawlakfr.github.io/pitchmeup-chrono",
+  "homepage": "http://maximepawlakfr.github.io/pitchmeup-chrono",
   "private": true,
   "dependencies": {
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.4"
   },
+  "devDependencies": {
+    "gh-pages": "^1.2.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build"
   }
 }
