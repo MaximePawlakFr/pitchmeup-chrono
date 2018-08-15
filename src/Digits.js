@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import "./Digits.css";
 
 class Digits extends Component {
-  constructor() {
-    super();
-  }
-
   show2DigitsNumber(number) {
     const prefix = number <= 9 ? "0" : "";
     return prefix + number;
