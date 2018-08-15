@@ -5,9 +5,10 @@ class DigitForm extends Component {
   constructor() {
     super();
     this.state = {
-      minutes: 2,
-      seconds: 1
+      minutes: 5,
+      seconds: 0
     };
+
     this.handleMinutesChange = this.handleMinutesChange.bind(this);
     this.handleSecondsChange = this.handleSecondsChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -65,13 +66,13 @@ class DigitForm extends Component {
           />
         </div>
         <div className="flex-auto flexbox-pack">
-          <button type="submit" className="flex-auto min-w-6">
+          <button type="submit" className="flex-auto min-w-15wh min-h-15vh">
             Start
           </button>
           <button
             type="button"
             onClick={this.props.onStop}
-            className="flex-auto min-w-6"
+            className="flex-auto min-w-15wh min-h-15vh"
           >
             Stop
           </button>

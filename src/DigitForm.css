@@ -18,6 +18,10 @@
   width: 4rem;
 }
 
-.min-w-6{
-  min-width: 6rem;
+.min-h-15vh {
+  min-height: 15vh;
+}
+
+.min-w-15wh{
+  min-width: 15vw;
 }
