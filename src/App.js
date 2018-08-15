@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import Digits from "./Digits";
 import DigitForm from "./DigitForm";
+import Time from "./Time";
 
 class App extends Component {
   constructor() {
@@ -21,7 +22,7 @@ class App extends Component {
 
   timer(duration) {
     const now = Date.now();
-    const elapsed = (now - this.state.startAt) / 1000;
+    const elapsed = (now - this.state.startAt - this.state.diffTime) / 1000;
     const diff = Math.round(duration - elapsed);
     if (diff >= 0) {
       const seconds = diff % 60;
@@ -48,9 +49,13 @@ class App extends Component {
     this.handleStart(duration);
   }
 
-  handleStart(duration) {
+  async handleStart(duration) {
     this.reset();
-    this.setState({ startAt: Date.now() });
+    const now = await Time.getUTCTime();
+    const localNow = Date.now();
+    const diffTime = localNow - now;
+
+    this.setState({ startAt: now, diffTime });
     this.countdown = setInterval(() => {
       this.timer(duration);
     }, 200);
@@ -71,8 +76,8 @@ class App extends Component {
         <div>
           <DigitForm
             onSubmit={this.handleFormSubmit}
-            onStop={this.handleStop}
             minutes={5}
+            onStop={this.handleStop}
             seconds={0}
           />
           <DigitForm
