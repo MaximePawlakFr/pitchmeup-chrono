@@ -1,7 +1,7 @@
 {
   "name": "pitchmeup-chrono",
   "version": "0.1.0",
-  "homepage": "https://maximepawlakfr.github.io/pitchmeup-chrono",
+  "homepage": "https://chrono.pitchmeup.fr",
   "private": true,
   "dependencies": {
     "firebase": "^5.3.1",
