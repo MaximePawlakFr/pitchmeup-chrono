@@ -10,6 +10,9 @@
 * [x] Version 1.2
     * As a user, I can see the chrono full-screen
 
+* TODO
+    * [ ] Fix the http access to remote timestamp
+
 * [ ] Version 1.5
     * As a user, I can setup a master chrono in order to be shared
     * As a user, I can see a slave chrono synchronized with a master

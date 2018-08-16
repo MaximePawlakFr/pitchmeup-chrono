@@ -8,5 +8,3 @@ import FirebaseHelper from "./FirebaseHelper";
 ReactDOM.render(<App />, document.getElementById("root"));
 registerServiceWorker();
 FirebaseHelper.init();
-let u = FirebaseHelper.findChrono("test", console.log);
-// u();
