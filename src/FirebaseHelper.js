@@ -34,4 +34,24 @@ export default class FirebaseHelper {
     });
     return unsubscribe;
   }
+
+  static createChrono(name, startAt, duration, password) {
+    const firestore = firebase.firestore();
+    const publicData = {
+      name,
+      startAt: new firebase.firestore.Timestamp(Math.round(startAt / 1000), 0),
+      duration
+    };
+    const privateData = {
+      password
+    };
+    return firestore
+      .collection("chronos")
+      .doc(name)
+      .set({ public: publicData, private: privateData })
+      .then(res => {})
+      .catch(err => {
+        console.error(err);
+      });
+  }
 }

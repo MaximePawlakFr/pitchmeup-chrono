@@ -20,8 +20,11 @@ class App extends Component {
     this.handleStop = this.handleStop.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
     this.chronoNameInput = React.createRef();
+    this.masterNameInput = React.createRef();
+    this.masterPasswordInput = React.createRef();
     this.reset = this.reset.bind(this);
     this.startFromStore = this.startFromStore.bind(this);
+    this.handleConnectMaster = this.handleConnectMaster.bind(this);
     this.unsubscribe = null;
   }
 
@@ -98,7 +101,19 @@ class App extends Component {
     this.unsubscribe = FirebaseHelper.findChrono(name, this.startFromStore);
   }
 
+  handleConnectMaster(event) {
+    event.preventDefault();
+    this.reset();
+    const name = this.masterNameInput.current.value;
+    const password = this.masterPasswordInput.current.value;
+
+    FirebaseHelper.createChrono(name, Date.now(), 3600, password);
+  }
+
   reset() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
     this.handleStop();
   }
 
@@ -129,9 +144,17 @@ class App extends Component {
             />
             <button type="submit">Connect</button>
           </form>
-          <form>
-            <input type="text" placeholder="Chrono name..." />
-            <input type="text" placeholder="master password" />
+          <form onSubmit={this.handleConnectMaster}>
+            <input
+              type="text"
+              placeholder="Chrono name..."
+              ref={this.masterNameInput}
+            />
+            <input
+              type="password"
+              placeholder="master password"
+              ref={this.masterPasswordInput}
+            />
             <button type="submit">Master a new chrono</button>
           </form>
         </div>
