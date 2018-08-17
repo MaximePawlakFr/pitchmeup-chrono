@@ -14,8 +14,13 @@
 * [x] Version 1.4
     * As a user, I can see a slave chrono synchronized with a master
 
-* [ ] Version 1.5
+* [x] Version 1.5
     * As a user, I can setup a master chrono in order to be shared
+
+* [ ] Version 1.6
+    * As a user, I can connect to a chrono I've just created
+    * As a user, when I mastering a chrono, I can start this chrono with a new time
+    * As a user, when I mastering a chrono, I can stop this chrono and stop all others watching
 
 
 ---
