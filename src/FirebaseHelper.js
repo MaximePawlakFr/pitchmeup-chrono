@@ -36,7 +36,7 @@ export default class FirebaseHelper {
     return unsubscribe;
   }
 
-  static createChrono(name, startAt, duration, password) {
+  static setupChrono(name, startAt, duration, password) {
     const firestore = firebase.firestore();
     const publicData = {
       name,
@@ -50,7 +50,7 @@ export default class FirebaseHelper {
       .collection("chronos")
       .doc(name)
       .set({ public: publicData, private: privateData })
-      .then(res => {})
+      .then(res => { })
       .catch(err => {
         console.error(err);
       });

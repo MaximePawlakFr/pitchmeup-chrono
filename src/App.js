@@ -25,6 +25,7 @@ class App extends Component {
     this.handleStart = this.handleStart.bind(this);
     this.handleStop = this.handleStop.bind(this);
 
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
     this.handleDisconnect = this.handleDisconnect.bind(this);
     this.handleSetupMaster = this.handleSetupMaster.bind(this);
@@ -39,7 +40,6 @@ class App extends Component {
   componentWillUnmount() {
     this.reset();
   }
-
 
   timer(duration) {
     const now = Date.now();
@@ -64,7 +64,7 @@ class App extends Component {
     const diffTime = localNow - now;
 
     if (this.state.master && this.state.master.isActive) {
-      FirebaseHelper.createChrono(this.state.master.name, startAt || now, duration, this.state.master.password)
+      FirebaseHelper.setupChrono(this.state.master.name, startAt || now, duration, this.state.master.password)
     }
 
     this.countdown = setInterval(() => {
@@ -77,6 +77,7 @@ class App extends Component {
   handleStart(data) {
     let duration = data.duration;
     let startAt = null;
+
     if (data && data.error) {
       this.setState({ status: `no chrono found '${data.name}'` });
       return;
@@ -86,16 +87,13 @@ class App extends Component {
         data.public.startAt.nanoseconds / 1000;
       duration = data.public.duration;
     }
+
     this.handleStop();
     this.start({ duration, startAt });
   }
 
   handleStop() {
     this.countdown = clearInterval(this.countdown);
-  }
-
-  handleDisconnect() {
-    this.reset();
   }
 
   handleConnect(name) {
@@ -109,11 +107,14 @@ class App extends Component {
     this.reset();
 
     const startAt = await Time.getUTCTime();
-    FirebaseHelper.createChrono(name, startAt, duration, password);
+    FirebaseHelper.setupChrono(name, startAt, duration, password);
     this.unsubscribe = FirebaseHelper.findChrono(name, this.handleStart);
     this.setState({ status: `mastering '${name}'`, master: { isActive: true, name, duration, password } });
   }
 
+  handleDisconnect() {
+    this.reset();
+  }
 
   disconnect() {
     if (this.unsubscribe) {
