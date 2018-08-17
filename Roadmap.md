@@ -17,11 +17,19 @@
 * [x] Version 1.5
     * As a user, I can setup a master chrono in order to be shared
 
-* [ ] Version 1.6
+* [x] Version 1.6
     * As a user, I can connect to a chrono I've just created
-    * As a user, when I mastering a chrono, I can start this chrono with a new time
-    * As a user, when I mastering a chrono, I can stop this chrono and stop all others watching
+    * As a user, when I'm mastering a chrono, I can start this chrono with a new time
 
+* [ ] v 1.7
+    * As a user, when I'm mastering a chrono, I can stop this chrono and stop all others watching
+
+* [ ] v 1.8
+    * As a user, I cannot setup an existing chrono if the password does not match
+
+* Others
+    * [ ] Update favicon
+    * [ ] Add head data
 
 ---
 
