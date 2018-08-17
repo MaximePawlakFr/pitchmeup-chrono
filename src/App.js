@@ -17,17 +17,18 @@ class App extends Component {
       master: null
     };
     this.timer = this.timer.bind(this);
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.handleStart = this.handleStart.bind(this);
-    this.handleDigitsChange = this.handleDigitsChange.bind(this);
-    this.handleStop = this.handleStop.bind(this);
-    this.handleConnect = this.handleConnect.bind(this);
-
-    this.reset = this.reset.bind(this);
     this.start = this.start.bind(this);
-    this.handleDisconnect = this.handleDisconnect.bind(this);
+    this.reset = this.reset.bind(this);
     this.disconnect = this.disconnect.bind(this);
+
+
+    this.handleStart = this.handleStart.bind(this);
+    this.handleStop = this.handleStop.bind(this);
+
+    this.handleConnect = this.handleConnect.bind(this);
+    this.handleDisconnect = this.handleDisconnect.bind(this);
     this.handleSetupMaster = this.handleSetupMaster.bind(this);
+
     this.unsubscribe = null;
   }
 
@@ -39,9 +40,6 @@ class App extends Component {
     this.reset();
   }
 
-  handleDigitsChange(digits) {
-    // TODO
-  }
 
   timer(duration) {
     const now = Date.now();
@@ -61,8 +59,6 @@ class App extends Component {
   }
 
   async start({ duration, startAt }) {
-    console.log(duration, startAt);
-
     const now = await Time.getUTCTime();
     const localNow = Date.now();
     const diffTime = localNow - now;
@@ -105,17 +101,16 @@ class App extends Component {
   handleConnect(name) {
     this.reset();
 
-    console.log("Connect: ", name);
     this.unsubscribe = FirebaseHelper.findChrono(name, this.handleStart);
     this.setState({ status: `connected to '${name}'` });
   }
 
   async handleSetupMaster(name, duration, password) {
     this.reset();
+
     const startAt = await Time.getUTCTime();
     FirebaseHelper.createChrono(name, startAt, duration, password);
     this.unsubscribe = FirebaseHelper.findChrono(name, this.handleStart);
-
     this.setState({ status: `mastering '${name}'`, master: { isActive: true, name, duration, password } });
   }
 
@@ -150,7 +145,9 @@ class App extends Component {
             seconds={0}
           />
         </div>
+
         Status: {this.state.status}
+
         <NetworkPanel onConnect={this.handleConnect} onDisconnect={this.handleDisconnect} onSetupMaster={this.handleSetupMaster} />
 
       </div>

@@ -3,7 +3,6 @@ import React, { Component } from "react";
 export default class NetworkPanel extends Component {
   constructor() {
     super()
-
     this.state = {
       status: 'DISCONNECTED'
     }
@@ -18,8 +17,6 @@ export default class NetworkPanel extends Component {
     this.minutesInput = React.createRef();
     this.secondsInput = React.createRef();
   }
-
-
 
   handleConnect(event) {
     event.preventDefault();
@@ -40,7 +37,6 @@ export default class NetworkPanel extends Component {
     this.props.onSetupMaster(name, duration, password)
   }
 
-
   handleDisconnect() {
     this.setState({ status: "DISCONNECTED" });
     this.props.onDisconnect();
@@ -49,7 +45,7 @@ export default class NetworkPanel extends Component {
   render() {
     return (
       <div>
-        <h2>Network</h2>
+        <h2>Network Chronos</h2>
         {this.state.status !== "DISCONNECTED" ? (<button onClick={this.handleDisconnect}>Disconnect</button>
 
         ) : (
@@ -93,7 +89,7 @@ export default class NetworkPanel extends Component {
                   placeholder="master password"
                   ref={this.masterPasswordInput}
                 />
-                <button type="submit">Master a new chrono</button>
+                <button type="submit">Setup</button>
               </form>
             </div>
           )}
