@@ -30,6 +30,7 @@ export default class FirebaseHelper {
         callback && callback(doc.data());
       } else {
         console.log("No doc: ", name, cleanName);
+        callback && callback({ error: true, name: cleanName });
       }
     });
     return unsubscribe;

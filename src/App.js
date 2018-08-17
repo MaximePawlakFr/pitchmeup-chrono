@@ -11,7 +11,8 @@ class App extends Component {
     this.state = {
       startAt: 0,
       minutes: 5,
-      seconds: 0
+      seconds: 0,
+      status: "disconnected"
     };
     this.timer = this.timer.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -23,9 +24,22 @@ class App extends Component {
     this.masterNameInput = React.createRef();
     this.masterPasswordInput = React.createRef();
     this.reset = this.reset.bind(this);
+    this.disconnect = this.disconnect.bind(this);
     this.startFromStore = this.startFromStore.bind(this);
     this.handleConnectMaster = this.handleConnectMaster.bind(this);
     this.unsubscribe = null;
+  }
+
+  componentDidMount() {
+    this.reset();
+  }
+
+  componentWillUnmount() {
+    this.reset();
+  }
+
+  handleDigitsChange(digits) {
+    // TODO
   }
 
   timer(duration) {
@@ -39,18 +53,6 @@ class App extends Component {
     } else {
       this.handleStop();
     }
-  }
-
-  componentDidMount() {
-    this.reset();
-  }
-
-  componentWillUnmount() {
-    this.reset();
-  }
-
-  handleDigitsChange(digits) {
-    // TODO
   }
 
   handleFormSubmit(duration) {
@@ -75,27 +77,32 @@ class App extends Component {
 
   async startFromStore(data) {
     console.log("startFromStore", data);
-    this.reset();
+    if (data && data.error) {
+      this.setState({ status: `no chrono found '${data.name}'` });
+      return;
+    }
+
     const now = await Time.getUTCTime();
     const localNow = Date.now();
     const diffTime = localNow - now;
     const fStartAt =
       data.public.startAt.seconds * 1000 +
       data.public.startAt.nanoseconds / 1000;
-    console.log(fStartAt);
-    console.log(localNow);
 
-    this.setState({ startAt: fStartAt, diffTime });
+    this.setState({
+      startAt: fStartAt,
+      diffTime,
+      status: `connected to '${data.public.name}'`
+    });
     this.countdown = setInterval(() => {
       this.timer(data.public.duration);
     }, 200);
   }
 
   handleConnect(event) {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
     event.preventDefault();
+    this.reset();
+
     const name = this.chronoNameInput.current.value;
     console.log("Connect: ", name);
     this.unsubscribe = FirebaseHelper.findChrono(name, this.startFromStore);
@@ -104,17 +111,26 @@ class App extends Component {
   handleConnectMaster(event) {
     event.preventDefault();
     this.reset();
+
     const name = this.masterNameInput.current.value;
     const password = this.masterPasswordInput.current.value;
 
     FirebaseHelper.createChrono(name, Date.now(), 3600, password);
+    this.unsubscribe = FirebaseHelper.findChrono(name, this.startFromStore);
+
+    this.setState({ status: `mastering '${name}'` });
+  }
+
+  disconnect() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+      this.setState({ status: "disconnected" });
+    }
   }
 
   reset() {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
     this.handleStop();
+    this.disconnect();
   }
 
   render() {
@@ -135,6 +151,7 @@ class App extends Component {
             seconds={0}
           />
         </div>
+        <h2>Status : {this.state.status}</h2>
         <div>
           <form onSubmit={this.handleConnect}>
             <input
