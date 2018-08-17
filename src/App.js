@@ -13,7 +13,8 @@ class App extends Component {
       startAt: 0,
       minutes: 5,
       seconds: 0,
-      status: "disconnected",
+      statusText: "disconnected",
+      status: "DISCONNECTED",
       master: null
     };
     this.timer = this.timer.bind(this);
@@ -29,6 +30,7 @@ class App extends Component {
     this.handleConnect = this.handleConnect.bind(this);
     this.handleDisconnect = this.handleDisconnect.bind(this);
     this.handleSetupMaster = this.handleSetupMaster.bind(this);
+    this.handleStatusChange = this.handleStatusChange.bind(this);
 
     this.unsubscribe = null;
   }
@@ -79,7 +81,7 @@ class App extends Component {
     let startAt = null;
 
     if (data && data.error) {
-      this.setState({ status: `no chrono found '${data.name}'` });
+      this.setState({ statusText: `no chrono found '${data.name}'` });
       return;
     } else if (data && data.public) {
       startAt =
@@ -96,11 +98,15 @@ class App extends Component {
     this.countdown = clearInterval(this.countdown);
   }
 
+  handleStatusChange(data) {
+    this.setState({ status: data && data.status });
+  }
+
   handleConnect(name) {
     this.reset();
 
     this.unsubscribe = FirebaseHelper.findChrono(name, this.handleStart);
-    this.setState({ status: `connected to '${name}'` });
+    this.setState({ statusText: `connected to '${name}'` });
   }
 
   async handleSetupMaster(name, duration, password) {
@@ -109,7 +115,7 @@ class App extends Component {
     const startAt = await Time.getUTCTime();
     FirebaseHelper.setupChrono(name, startAt, duration, password);
     this.unsubscribe = FirebaseHelper.findChrono(name, this.handleStart);
-    this.setState({ status: `mastering '${name}'`, master: { isActive: true, name, duration, password } });
+    this.setState({ statusText: `mastering '${name}'`, master: { isActive: true, name, duration, password } });
   }
 
   handleDisconnect() {
@@ -119,7 +125,7 @@ class App extends Component {
   disconnect() {
     if (this.unsubscribe) {
       this.unsubscribe();
-      this.setState({ status: "disconnected", master: null });
+      this.setState({ statusText: "disconnected", master: null });
     }
   }
 
@@ -130,28 +136,35 @@ class App extends Component {
 
   render() {
     return (
-      <div className="flexbox-container">
-        <Digits minutes={this.state.minutes} seconds={this.state.seconds} />
-        <div>
-          <DigitForm
-            onSubmit={this.handleFormSubmit}
-            minutes={5}
-            onStop={this.handleStop}
-            seconds={0}
-          />
-          <DigitForm
-            onSubmit={this.handleFormSubmit}
-            onStop={this.handleStop}
-            minutes={10}
-            seconds={0}
-          />
+      <div>
+        <div className="flexbox-container">
+          <Digits minutes={this.state.minutes} seconds={this.state.seconds} />
+          {this.state.status !== "CONNECTED" ? (<div>
+            <DigitForm
+              onSubmit={this.handleFormSubmit}
+              minutes={5}
+              onStop={this.handleStop}
+              seconds={0}
+            />
+            <DigitForm
+              onSubmit={this.handleFormSubmit}
+              onStop={this.handleStop}
+              minutes={10}
+              seconds={0}
+            />
+          </div>) : ""}
+
         </div>
+        Status: {this.state.statusText}
 
-        Status: {this.state.status}
-
-        <NetworkPanel onConnect={this.handleConnect} onDisconnect={this.handleDisconnect} onSetupMaster={this.handleSetupMaster} />
-
+        <NetworkPanel
+          onConnect={this.handleConnect}
+          onDisconnect={this.handleDisconnect}
+          onSetupMaster={this.handleSetupMaster}
+          onStatusChange={this.handleStatusChange}
+        />
       </div>
+
     );
   }
 }

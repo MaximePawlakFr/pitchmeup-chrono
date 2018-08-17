@@ -22,6 +22,7 @@ export default class NetworkPanel extends Component {
     event.preventDefault();
     const name = this.chronoNameInput.current.value;
     this.setState({ status: "CONNECTED" });
+    this.props.onStatusChange({ status: "CONNECTED" });
     this.props.onConnect(name);
   }
 
@@ -33,12 +34,15 @@ export default class NetworkPanel extends Component {
     const minutes = parseInt(this.minutesInput.current.value || 0, 10);
     const seconds = parseInt(this.secondsInput.current.value || 0, 10);
     const duration = minutes * 60 + seconds;
-    this.setState({ status: "CONNECTED" });
+    this.setState({ status: "MASTERING" });
+    this.props.onStatusChange({ status: "MASTERING" });
+
     this.props.onSetupMaster(name, duration, password)
   }
 
   handleDisconnect() {
     this.setState({ status: "DISCONNECTED" });
+    this.props.onStatusChange({ status: "DISCONNECTED" });
     this.props.onDisconnect();
   }
 
@@ -55,7 +59,7 @@ export default class NetworkPanel extends Component {
                 <input
                   type="text"
                   ref={this.chronoNameInput}
-                  placeholder="Chrono name..."
+                  placeholder="name..."
                 />
                 <button type="submit">Connect</button>
               </form>
@@ -81,12 +85,12 @@ export default class NetworkPanel extends Component {
 
                 <input
                   type="text"
-                  placeholder="Chrono name..."
+                  placeholder="name..."
                   ref={this.masterNameInput}
                 />
                 <input
                   type="password"
-                  placeholder="master password"
+                  placeholder="master password..."
                   ref={this.masterPasswordInput}
                 />
                 <button type="submit">Setup</button>
