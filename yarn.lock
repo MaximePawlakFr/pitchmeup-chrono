@@ -40,15 +40,15 @@
     faye-websocket "0.11.1"
     tslib "1.9.0"
 
-"@firebase/firestore-types@0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@firebase/firestore-types/-/firestore-types-0.5.0.tgz#dbf3aec64c0dfe2855038decb082059455b41a30"
+"@firebase/firestore-types@0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@firebase/firestore-types/-/firestore-types-0.6.0.tgz#560befea439a4a9d830866fa5f5859e4bb30d770"
 
-"@firebase/firestore@0.6.1":
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-0.6.1.tgz#c1fd1dc03f2c44d0bb50cc28c89c10691798ff14"
+"@firebase/firestore@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-0.7.0.tgz#1abbabac0f6a194513d625c5a71f62390e7ac2e3"
   dependencies:
-    "@firebase/firestore-types" "0.5.0"
+    "@firebase/firestore-types" "0.6.0"
     "@firebase/logger" "0.1.1"
     "@firebase/webchannel-wrapper" "0.2.8"
     grpc "1.13.1"
@@ -179,13 +179,13 @@ ajv@^5.0.0, ajv@^5.1.5, ajv@^5.2.0, ajv@^5.3.0:
     json-schema-traverse "^0.3.0"
 
 ajv@^6.0.1:
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.5.2.tgz#678495f9b82f7cca6be248dd92f59bff5e1f4360"
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.5.3.tgz#71a569d189ecf4f4f321224fecb166f071dd90f9"
   dependencies:
     fast-deep-equal "^2.0.1"
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.4.1"
-    uri-js "^4.2.1"
+    uri-js "^4.2.2"
 
 align-text@^0.1.1, align-text@^0.1.3:
   version "0.1.4"
@@ -1436,12 +1436,12 @@ caniuse-api@^1.5.2:
     lodash.uniq "^4.5.0"
 
 caniuse-db@^1.0.30000529, caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
-  version "1.0.30000876"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000876.tgz#0cbd78ad84900196982e5145c26170f6d6a93fd7"
+  version "1.0.30000877"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000877.tgz#29ea435fdbe8a671cc5b027a75e28a816c17c340"
 
 caniuse-lite@^1.0.30000748, caniuse-lite@^1.0.30000792:
-  version "1.0.30000874"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000874.tgz#a641b1f1c420d58d9b132920ef6ba87bbdcd2223"
+  version "1.0.30000877"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000877.tgz#f189673b86ecc06436520e3e391de6a13ca923b4"
 
 capture-stack-trace@^1.0.0:
   version "1.0.0"
@@ -1522,9 +1522,9 @@ chownr@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.0.1.tgz#e2a75042a9551908bebd25b8523d5f9769d79181"
 
-ci-info@^1.0.0:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-1.1.3.tgz#710193264bb05c77b8c90d02f5aaf22216a667b2"
+ci-info@^1.3.0:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-1.3.1.tgz#da21bc65a5f0d0d250c19a169065532b42fa048c"
 
 cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   version "1.0.4"
@@ -2036,11 +2036,10 @@ default-require-extensions@^2.0.0:
     strip-bom "^3.0.0"
 
 define-properties@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/define-properties/-/define-properties-1.1.2.tgz#83a73f2fea569898fb737193c8f873caf6d45c94"
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/define-properties/-/define-properties-1.1.3.tgz#cf88da6cbee26fe6db7094f61d870cbd84cee9f1"
   dependencies:
-    foreach "^2.0.5"
-    object-keys "^1.0.8"
+    object-keys "^1.0.12"
 
 define-property@^0.2.5:
   version "0.2.5"
@@ -2266,8 +2265,8 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
 
 electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.30:
-  version "1.3.57"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.57.tgz#61b2446f16af26fb8873210007a7637ad644c82d"
+  version "1.3.58"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.58.tgz#8267a4000014e93986d9d18c65a8b4022ca75188"
 
 elliptic@^6.0.0:
   version "6.4.1"
@@ -2343,8 +2342,8 @@ es-to-primitive@^1.1.1:
     is-symbol "^1.0.1"
 
 es5-ext@^0.10.14, es5-ext@^0.10.35, es5-ext@^0.10.9, es5-ext@~0.10.14:
-  version "0.10.45"
-  resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.45.tgz#0bfdf7b473da5919d5adf3bd25ceb754fccc3653"
+  version "0.10.46"
+  resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.46.tgz#efd99f67c5a7ec789baa3daa7f79870388f7f572"
   dependencies:
     es6-iterator "~2.0.3"
     es6-symbol "~3.1.1"
@@ -2932,13 +2931,13 @@ find-up@^2.0.0, find-up@^2.1.0:
     locate-path "^2.0.0"
 
 firebase@^5.3.1:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-5.3.1.tgz#99df1a9b101d12cd765ef010bb015fdb0b76850b"
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-5.4.0.tgz#80f639313416053ba229f8b11327832250ee01a1"
   dependencies:
     "@firebase/app" "0.3.3"
     "@firebase/auth" "0.7.2"
     "@firebase/database" "0.3.4"
-    "@firebase/firestore" "0.6.1"
+    "@firebase/firestore" "0.7.0"
     "@firebase/functions" "0.3.0"
     "@firebase/messaging" "0.3.5"
     "@firebase/polyfill" "0.3.3"
@@ -2958,8 +2957,8 @@ flatten@^1.0.2:
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
 follow-redirects@^1.0.0:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.2.tgz#5a9d80e0165957e5ef0c1210678fc5c4acb9fb03"
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.5.tgz#3c143ca599a2e22e62876687d68b23d55bad788b"
   dependencies:
     debug "^3.1.0"
 
@@ -2972,10 +2971,6 @@ for-own@^0.1.4:
   resolved "https://registry.yarnpkg.com/for-own/-/for-own-0.1.5.tgz#5265c681a4f294dabbf17c9509b6763aa84510ce"
   dependencies:
     for-in "^1.0.1"
-
-foreach@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/foreach/-/foreach-2.0.5.tgz#0bee005018aeb260d0a3af3ae658dd0136ec1b99"
 
 forever-agent@~0.6.1:
   version "0.6.1"
@@ -3464,7 +3459,7 @@ iconv-lite@0.4.19:
   version "0.4.19"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
 
-iconv-lite@^0.4.17, iconv-lite@^0.4.4, iconv-lite@~0.4.13:
+iconv-lite@0.4.23, iconv-lite@^0.4.17, iconv-lite@^0.4.4, iconv-lite@~0.4.13:
   version "0.4.23"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.23.tgz#297871f63be507adcfbfca715d0cd0eed84e9a63"
   dependencies:
@@ -3630,10 +3625,10 @@ is-callable@^1.1.1, is-callable@^1.1.3:
   resolved "https://registry.yarnpkg.com/is-callable/-/is-callable-1.1.4.tgz#1e1adf219e1eeb684d691f9d6a05ff0d30a24d75"
 
 is-ci@^1.0.10:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/is-ci/-/is-ci-1.1.0.tgz#247e4162e7860cebbdaf30b774d6b0ac7dcfe7a5"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/is-ci/-/is-ci-1.2.0.tgz#3f4a08d6303a09882cef3f0fb97439c5f5ce2d53"
   dependencies:
-    ci-info "^1.0.0"
+    ci-info "^1.3.0"
 
 is-data-descriptor@^0.1.4:
   version "0.1.4"
@@ -4769,8 +4764,8 @@ negotiator@0.6.1:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
 neo-async@^2.5.0:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.5.1.tgz#acb909e327b1e87ec9ef15f41b8a269512ad41ee"
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.5.2.tgz#489105ce7bc54e709d736b195f82135048c50fcc"
 
 next-tick@1:
   version "1.0.0"
@@ -4948,7 +4943,7 @@ object-hash@^1.1.4:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-1.3.0.tgz#76d9ba6ff113cf8efc0d996102851fe6723963e2"
 
-object-keys@^1.0.8:
+object-keys@^1.0.12:
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.0.12.tgz#09c53855377575310cca62f55bb334abff7b3ed2"
 
@@ -6972,7 +6967,7 @@ upper-case@^1.1.1:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/upper-case/-/upper-case-1.1.3.tgz#f6b4501c2ec4cdd26ba78be7222961de77621598"
 
-uri-js@^4.2.1:
+uri-js@^4.2.2:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/uri-js/-/uri-js-4.2.2.tgz#94c540e1ff772956e2299507c010aea6c8838eb0"
   dependencies:
@@ -7210,10 +7205,10 @@ websocket-extensions@>=0.1.1:
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
 
 whatwg-encoding@^1.0.1:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/whatwg-encoding/-/whatwg-encoding-1.0.3.tgz#57c235bc8657e914d24e1a397d3c82daee0a6ba3"
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/whatwg-encoding/-/whatwg-encoding-1.0.4.tgz#63fb016b7435b795d9025632c086a5209dbd2621"
   dependencies:
-    iconv-lite "0.4.19"
+    iconv-lite "0.4.23"
 
 whatwg-fetch@2.0.3:
   version "2.0.3"
