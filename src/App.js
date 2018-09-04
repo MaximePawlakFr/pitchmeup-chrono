@@ -22,7 +22,6 @@ class App extends Component {
     this.reset = this.reset.bind(this);
     this.disconnect = this.disconnect.bind(this);
 
-
     this.handleStart = this.handleStart.bind(this);
     this.handleStop = this.handleStop.bind(this);
 
@@ -66,7 +65,12 @@ class App extends Component {
     const diffTime = localNow - now;
 
     if (this.state.master && this.state.master.isActive) {
-      FirebaseHelper.setupChrono(this.state.master.name, startAt || now, duration, this.state.master.password)
+      FirebaseHelper.setupChrono(
+        this.state.master.name,
+        startAt || now,
+        duration,
+        this.state.master.password
+      );
     }
 
     this.countdown = setInterval(() => {
@@ -77,6 +81,8 @@ class App extends Component {
   }
 
   handleStart(data) {
+    console.log("App handleStart");
+
     let duration = data.duration;
     let startAt = null;
 
@@ -95,14 +101,20 @@ class App extends Component {
   }
 
   handleStop() {
+    console.log("App handleStop");
+
     this.countdown = clearInterval(this.countdown);
   }
 
   handleStatusChange(data) {
+    console.log("App handleStatusChange");
+
     this.setState({ status: data && data.status });
   }
 
   handleConnect(name) {
+    console.log("App handleConnect");
+
     this.reset();
 
     this.unsubscribe = FirebaseHelper.findChrono(name, this.handleStart);
@@ -110,12 +122,17 @@ class App extends Component {
   }
 
   async handleSetupMaster(name, duration, password) {
+    console.log("App handleSetupMaster");
+
     this.reset();
 
     const startAt = await Time.getUTCTime();
     FirebaseHelper.setupChrono(name, startAt, duration, password);
     this.unsubscribe = FirebaseHelper.findChrono(name, this.handleStart);
-    this.setState({ statusText: `mastering '${name}'`, master: { isActive: true, name, duration, password } });
+    this.setState({
+      statusText: `mastering '${name}'`,
+      master: { isActive: true, name, duration, password }
+    });
   }
 
   handleDisconnect() {
@@ -130,6 +147,8 @@ class App extends Component {
   }
 
   reset() {
+    console.log("App reset");
+
     this.handleStop();
     this.disconnect();
   }
@@ -139,24 +158,26 @@ class App extends Component {
       <div>
         <div className="flexbox-container">
           <Digits minutes={this.state.minutes} seconds={this.state.seconds} />
-          {this.state.status !== "CONNECTED" ? (<div>
-            <DigitForm
-              onSubmit={this.handleFormSubmit}
-              minutes={5}
-              onStop={this.handleStop}
-              seconds={0}
-            />
-            <DigitForm
-              onSubmit={this.handleFormSubmit}
-              onStop={this.handleStop}
-              minutes={10}
-              seconds={0}
-            />
-          </div>) : ""}
-
+          {this.state.status !== "CONNECTED" ? (
+            <div>
+              <DigitForm
+                onSubmit={this.handleFormSubmit}
+                minutes={5}
+                onStop={this.handleStop}
+                seconds={0}
+              />
+              <DigitForm
+                onSubmit={this.handleFormSubmit}
+                onStop={this.handleStop}
+                minutes={10}
+                seconds={0}
+              />
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         Status: {this.state.statusText}
-
         <NetworkPanel
           onConnect={this.handleConnect}
           onDisconnect={this.handleDisconnect}
@@ -164,7 +185,6 @@ class App extends Component {
           onStatusChange={this.handleStatusChange}
         />
       </div>
-
     );
   }
 }
