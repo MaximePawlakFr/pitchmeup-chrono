@@ -5,6 +5,7 @@ import DigitForm from "./DigitForm";
 import Time from "./Time";
 import FirebaseHelper from "./FirebaseHelper";
 import NetworkPanel from "./NetworkPanel";
+import Version from "./Version";
 
 class App extends Component {
   constructor() {
@@ -184,6 +185,7 @@ class App extends Component {
           onSetupMaster={this.handleSetupMaster}
           onStatusChange={this.handleStatusChange}
         />
+        <Version />
       </div>
     );
   }
