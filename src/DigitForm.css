@@ -1,36 +1,32 @@
-.flexbox-form{
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+.pure-form input {
+  color: black;
 }
 
-.flexbox-pack{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.pure-form button[type="submit"] {
+  margin: unset;
 }
 
-.center-inputs input {
-  text-align: center;
+.pure-form .button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+  color: white;
+  border-radius: 4px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-
-.flex-auto{
-  flex:auto;
+.button-success {
+  background: rgb(28, 184, 65); /* this is a green */
 }
 
-.w-4 {
-  width: 4rem;
+.button-error {
+  background: rgb(202, 60, 60); /* this is a maroon */
 }
 
-.min-h-inputs {
-  min-height: 5vh;
+.button-warning {
+  background: rgb(223, 117, 20); /* this is an orange */
 }
 
-.min-h-controls {
-  min-height: 7vh;
-}
-
-.min-w-15wh{
-  min-width: 15vw;
+.button-secondary {
+  background: rgb(66, 184, 221); /* this is a light blue */
 }

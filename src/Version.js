@@ -8,5 +8,5 @@ const getVersionNumber = ({ major, minor, patch }) => {
 };
 
 export default () => {
-  return <div class="versionInfos">v{getVersionNumber(versionNumber)}</div>;
+  return <div className="versionInfos">v{getVersionNumber(versionNumber)}</div>;
 };

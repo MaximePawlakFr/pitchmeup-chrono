@@ -20,44 +20,65 @@ class DigitForm extends Component {
   render() {
     return (
       <form
-        className="flexbox-form center-inputs"
         onSubmit={this.handleFormSubmit}
+        className="pure-form pure-form-stacked"
       >
-        <div className="flexbox-pack">
-          <input
-            className="w-4 min-h-inputs"
-            type="number"
-            name="minutes"
-            placeholder="minutes"
-            min="0"
-            max="59"
-            ref={this.minutesInput}
-            defaultValue={this.props.minutes}
-          />
-          :
-          <input
-            className="w-4 min-h-inputs"
-            type="number"
-            name="seconds"
-            placeholder="seconds"
-            min="0"
-            max="59"
-            ref={this.secondsInput}
-            defaultValue={this.props.seconds}
-          />
-        </div>
-        <div className="flex-auto flexbox-pack">
-          <button type="submit" className="flex-auto min-w-15wh min-h-controls">
-            Start
-          </button>
-          <button
-            type="button"
-            onClick={this.props.onStop}
-            className="flex-auto min-w-15wh min-h-controls"
-          >
-            Stop
-          </button>
-        </div>
+        <fieldset>
+          <legend>{this.props.title}</legend>
+
+          <div className="pure-g">
+            <div className="pure-u-1-4 ">
+              <label htmlFor="minutes">Minutes</label>
+
+              <input
+                id="minutes"
+                type="number"
+                name="minutes"
+                placeholder="minutes"
+                min="0"
+                max="59"
+                ref={this.minutesInput}
+                defaultValue={this.props.minutes}
+                className="pure-u-23-24"
+              />
+            </div>
+            <div className="pure-u-1-4 ">
+              <label htmlFor="seconds">Seconds</label>
+              <input
+                id="seconds"
+                type="number"
+                name="seconds"
+                placeholder="seconds"
+                min="0"
+                max="59"
+                ref={this.secondsInput}
+                defaultValue={this.props.seconds}
+                className="pure-u-23-24"
+              />
+            </div>
+            <div className="pure-u-1-4">
+              <label>&nbsp;</label>
+
+              <button
+                type="submit"
+                className="pure-u-23-24 pure-button button-success"
+              >
+                Start
+              </button>
+            </div>
+            <div className="pure-u-1-4">
+              <label>&nbsp;</label>
+
+              <button
+                type="button"
+                onClick={this.props.onStop}
+                className="pure-u-23-24 pure-button button-error"
+              >
+                Stop
+              </button>
+            </div>
+          </div>
+        </fieldset>
       </form>
     );
   }

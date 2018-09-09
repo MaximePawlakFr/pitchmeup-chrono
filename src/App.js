@@ -166,12 +166,14 @@ class App extends Component {
                 minutes={5}
                 onStop={this.handleStop}
                 seconds={0}
+                title="Chrono 1"
               />
               <DigitForm
                 onSubmit={this.handleFormSubmit}
                 onStop={this.handleStop}
                 minutes={10}
                 seconds={0}
+                title="Chrono 2"
               />
             </div>
           ) : (
