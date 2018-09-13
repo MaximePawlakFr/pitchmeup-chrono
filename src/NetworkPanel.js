@@ -57,7 +57,7 @@ export default class NetworkPanel extends Component {
 
   render() {
     return (
-      <div>
+      <div className="network-panel">
         <h2>Network Chronos</h2>
         {this.state.status !== "DISCONNECTED" ? (
           <div className="pure-g center">
@@ -112,7 +112,7 @@ export default class NetworkPanel extends Component {
                 <legend>
                   <h3>Setup a master chrono</h3>
                 </legend>
-                <div className="pure-g center">
+                <div className="pure-g">
                   <div className="pure-u-1-2">
                     <label htmlFor="masterMinutes">Minutes</label>
                     <input

@@ -19,6 +19,10 @@
   font-weight: bold;
 }
 
+.network-panel {
+  margin-top: 5em;
+}
+
 .master-chrono-form {
   margin-top: 1em;
 }
