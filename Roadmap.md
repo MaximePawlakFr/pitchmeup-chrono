@@ -29,6 +29,9 @@
     - Fix button style
   - v1.6.2
     - Add style to network panel
+  - v1.6.3
+    - Edit title with emojis
+    - Edit favicon
 
 - [ ] v 1.7
 
