@@ -60,14 +60,25 @@ export default class NetworkPanel extends Component {
       <div>
         <h2>Network Chronos</h2>
         {this.state.status !== "DISCONNECTED" ? (
-          <button onClick={this.handleDisconnect}>Disconnect</button>
+          <div className="pure-g center">
+            <div className="pure-u-1">
+              <button
+                onClick={this.handleDisconnect}
+                className="pure-button button-warning pure-u-23-24"
+              >
+                Disconnect
+              </button>
+            </div>
+          </div>
         ) : (
           <div>
             <form
               onSubmit={this.handleConnect}
               className="pure-form pure-form-stacked"
             >
-              <legend>Connect to a chrono</legend>
+              <legend>
+                <h3>Connect to a chrono</h3>
+              </legend>
               <fieldset>
                 <div className="pure-g">
                   <div className="pure-u-1-2">
@@ -76,7 +87,7 @@ export default class NetworkPanel extends Component {
                       type="text"
                       name="chronoName"
                       ref={this.chronoNameInput}
-                      placeholder="name..."
+                      placeholder="Like myEvent ..."
                       className="pure-u-23-24 "
                     />
                   </div>
@@ -95,17 +106,19 @@ export default class NetworkPanel extends Component {
 
             <form
               onSubmit={this.handleSetupMaster}
-              className="pure-form pure-form-stacked"
+              className="pure-form pure-form-stacked master-chrono-form"
             >
               <fieldset>
-                <legend>Setup a master chrono</legend>
-                <div className="pure-g">
+                <legend>
+                  <h3>Setup a master chrono</h3>
+                </legend>
+                <div className="pure-g center">
                   <div className="pure-u-1-2">
                     <label htmlFor="masterMinutes">Minutes</label>
                     <input
                       type="number"
                       name="minutes"
-                      placeholder="minutes"
+                      placeholder="0"
                       name="masterMinutes"
                       min="0"
                       max="59"
@@ -119,7 +132,7 @@ export default class NetworkPanel extends Component {
                     <input
                       type="number"
                       name="seconds"
-                      placeholder="seconds"
+                      placeholder="0"
                       name="masterSeconds"
                       min="0"
                       max="59"
@@ -132,7 +145,7 @@ export default class NetworkPanel extends Component {
                     <label htmlFor="masterName">Name</label>
                     <input
                       type="text"
-                      placeholder="name..."
+                      placeholder="Like myEvent ..."
                       name="masterName"
                       ref={this.masterNameInput}
                       className="pure-u-23-24"
@@ -143,7 +156,7 @@ export default class NetworkPanel extends Component {
                     <label htmlFor="masterPassword">Password</label>
                     <input
                       type="password"
-                      placeholder="master password..."
+                      placeholder="Like psss123 ..."
                       name="masterPassword"
                       ref={this.masterPasswordInput}
                       className="pure-u-23-24"

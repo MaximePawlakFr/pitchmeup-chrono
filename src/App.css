@@ -1,3 +1,7 @@
+.app {
+  margin: 5px;
+}
+
 .flexbox-container {
   min-height: 100vh;
 
@@ -11,12 +15,24 @@
   text-align: center;
 }
 
+.bold {
+  font-weight: bold;
+}
+
+.master-chrono-form {
+  margin-top: 1em;
+}
+
 .pure-form input {
   color: black;
 }
 
 .pure-form button[type="submit"] {
   margin: unset;
+}
+
+.pure-form legend {
+  color: unset;
 }
 
 .pure-form .button-success,

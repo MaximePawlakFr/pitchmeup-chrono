@@ -156,7 +156,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="app">
         <div className="flexbox-container">
           <Digits minutes={this.state.minutes} seconds={this.state.seconds} />
           {this.state.status !== "CONNECTED" ? (
@@ -180,7 +180,9 @@ class App extends Component {
             ""
           )}
         </div>
-        Status: {this.state.statusText}
+        <div className="status-text center">
+          <span class="bold">Status:</span> {this.state.statusText}
+        </div>
         <NetworkPanel
           onConnect={this.handleConnect}
           onDisconnect={this.handleDisconnect}
