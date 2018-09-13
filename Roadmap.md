@@ -27,6 +27,8 @@
   - As a user, when I'm mastering a chrono, I can start this chrono with a new time
   - v1.6.1
     - Fix button style
+  - v1.6.2
+    - Add style to network panel
 
 - [ ] v 1.7
 

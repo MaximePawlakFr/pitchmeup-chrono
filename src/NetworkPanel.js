@@ -58,7 +58,15 @@ export default class NetworkPanel extends Component {
   render() {
     return (
       <div className="network-panel">
-        <h2>Network Chronos</h2>
+        <h2>
+          <span role="img" aria-label="antena">
+            📡
+          </span>
+          &nbsp;Network Chronos&nbsp;
+          <span role="img" aria-label="antena">
+            📡
+          </span>
+        </h2>
         {this.state.status !== "DISCONNECTED" ? (
           <div className="pure-g center">
             <div className="pure-u-1">
@@ -77,7 +85,12 @@ export default class NetworkPanel extends Component {
               className="pure-form pure-form-stacked"
             >
               <legend>
-                <h3>Connect to a chrono</h3>
+                <h3>
+                  <span role="img" aria-label="chnoro">
+                    ⏱
+                  </span>
+                  &nbsp;Connect to a chrono
+                </h3>
               </legend>
               <fieldset>
                 <div className="pure-g">
@@ -110,16 +123,20 @@ export default class NetworkPanel extends Component {
             >
               <fieldset>
                 <legend>
-                  <h3>Setup a master chrono</h3>
+                  <h3>
+                    <span role="img" aria-label="chnoro">
+                      ⏱
+                    </span>
+                    &nbsp;Setup a master chrono
+                  </h3>
                 </legend>
                 <div className="pure-g">
                   <div className="pure-u-1-2">
-                    <label htmlFor="masterMinutes">Minutes</label>
+                    <label htmlFor="minutes">Minutes</label>
                     <input
                       type="number"
                       name="minutes"
                       placeholder="0"
-                      name="masterMinutes"
                       min="0"
                       max="59"
                       ref={this.minutesInput}
@@ -128,12 +145,11 @@ export default class NetworkPanel extends Component {
                   </div>
 
                   <div className="pure-u-1-2">
-                    <label htmlFor="masterSeconds">Seconds</label>
+                    <label htmlFor="seconds">Seconds</label>
                     <input
                       type="number"
                       name="seconds"
                       placeholder="0"
-                      name="masterSeconds"
                       min="0"
                       max="59"
                       ref={this.secondsInput}
