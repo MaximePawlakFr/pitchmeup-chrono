@@ -63,45 +63,103 @@ export default class NetworkPanel extends Component {
           <button onClick={this.handleDisconnect}>Disconnect</button>
         ) : (
           <div>
-            <form onSubmit={this.handleConnect}>
-              <h4>Connect to a chrono</h4>
-              <input
-                type="text"
-                ref={this.chronoNameInput}
-                placeholder="name..."
-              />
-              <button type="submit">Connect</button>
+            <form
+              onSubmit={this.handleConnect}
+              className="pure-form pure-form-stacked"
+            >
+              <legend>Connect to a chrono</legend>
+              <fieldset>
+                <div className="pure-g">
+                  <div className="pure-u-1-2">
+                    <label htmlFor="chronoName">Name</label>
+                    <input
+                      type="text"
+                      name="chronoName"
+                      ref={this.chronoNameInput}
+                      placeholder="name..."
+                      className="pure-u-23-24 "
+                    />
+                  </div>
+                  <div className="pure-u-1-2">
+                    <label>&nbsp;</label>
+                    <button
+                      type="submit"
+                      className="pure-u-23-24 pure-button button-secondary"
+                    >
+                      Connect
+                    </button>
+                  </div>
+                </div>
+              </fieldset>
             </form>
-            <form onSubmit={this.handleSetupMaster}>
-              <h4>Setup a master chrono</h4>
-              <input
-                type="number"
-                name="minutes"
-                placeholder="minutes"
-                min="0"
-                max="59"
-                ref={this.minutesInput}
-              />
-              :
-              <input
-                type="number"
-                name="seconds"
-                placeholder="seconds"
-                min="0"
-                max="59"
-                ref={this.secondsInput}
-              />
-              <input
-                type="text"
-                placeholder="name..."
-                ref={this.masterNameInput}
-              />
-              <input
-                type="password"
-                placeholder="master password..."
-                ref={this.masterPasswordInput}
-              />
-              <button type="submit">Setup</button>
+
+            <form
+              onSubmit={this.handleSetupMaster}
+              className="pure-form pure-form-stacked"
+            >
+              <fieldset>
+                <legend>Setup a master chrono</legend>
+                <div className="pure-g">
+                  <div className="pure-u-1-2">
+                    <label htmlFor="masterMinutes">Minutes</label>
+                    <input
+                      type="number"
+                      name="minutes"
+                      placeholder="minutes"
+                      name="masterMinutes"
+                      min="0"
+                      max="59"
+                      ref={this.minutesInput}
+                      className="pure-u-23-24"
+                    />
+                  </div>
+
+                  <div className="pure-u-1-2">
+                    <label htmlFor="masterSeconds">Seconds</label>
+                    <input
+                      type="number"
+                      name="seconds"
+                      placeholder="seconds"
+                      name="masterSeconds"
+                      min="0"
+                      max="59"
+                      ref={this.secondsInput}
+                      className="pure-u-23-24"
+                    />
+                  </div>
+
+                  <div className="pure-u-1-2">
+                    <label htmlFor="masterName">Name</label>
+                    <input
+                      type="text"
+                      placeholder="name..."
+                      name="masterName"
+                      ref={this.masterNameInput}
+                      className="pure-u-23-24"
+                    />
+                  </div>
+
+                  <div className="pure-u-1-2">
+                    <label htmlFor="masterPassword">Password</label>
+                    <input
+                      type="password"
+                      placeholder="master password..."
+                      name="masterPassword"
+                      ref={this.masterPasswordInput}
+                      className="pure-u-23-24"
+                    />
+                  </div>
+                  <div className="pure-u-1">
+                    <label>&nbsp;</label>
+                    <button
+                      type="submit"
+                      className="pure-u-23-24 pure-button button-secondary"
+                    >
+                      Setup
+                    </button>
+                  </div>
+                </div>
+              </fieldset>
             </form>
           </div>
         )}
