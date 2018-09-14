@@ -16,43 +16,114 @@ export default class FirebaseHelper {
     firestore.settings(settings);
   }
 
-  static findChrono(name, callback) {
-    const firestore = firebase.firestore();
-    const cleanName = name && name.length > 0 && name.trim().toLowerCase();
-    if (!cleanName) {
+  static cleanName(name) {
+    const newName = name && name.length > 0 && name.trim().toLowerCase();
+    if (!newName) {
       return;
     }
+    return newName;
+  }
+
+  static findChrono(name, callback, args) {
+    console.log("findChrono", name);
+    const cleanName = this.cleanName(name);
+
+    const firestore = firebase.firestore();
     const docRef = firestore.collection("chronos").doc(cleanName);
 
-    const unsubscribe = docRef.onSnapshot(doc => {
-      if (doc.exists) {
-        console.log(doc.data());
-        callback && callback(doc.data());
-      } else {
-        console.log("No doc: ", name, cleanName);
-        callback && callback({ error: true, name: cleanName });
-      }
-    });
-    return unsubscribe;
+    return docRef
+      .get()
+      .then(doc => {
+        console.log("get", doc);
+
+        if (doc.exists) {
+          console.log(doc.data());
+          callback && callback({ document: doc.data(), ...args });
+        } else {
+          console.log("No doc: ", name, cleanName);
+          callback && callback({ error: true, name: cleanName });
+        }
+      })
+      .catch(function(error) {
+        console.log("Error getting document:", error);
+      });
   }
 
   static setupChrono(name, startAt, duration, password) {
+    console.log("setupChrono", name);
+    const cleanName = this.cleanName(name);
+
     const firestore = firebase.firestore();
     const publicData = {
-      name,
+      cleanName,
       startAt: new firebase.firestore.Timestamp(Math.round(startAt / 1000), 0),
-      duration
+      duration,
+      status: "CREATED"
     };
     const privateData = {
       password
     };
     return firestore
       .collection("chronos")
-      .doc(name)
+      .doc(cleanName)
       .set({ public: publicData, private: privateData })
-      .then(res => { })
+      .then(res => {})
       .catch(err => {
         console.error(err);
       });
+  }
+
+  static startChrono(name, password) {
+    console.log("startChrono", name);
+    const cleanName = this.cleanName(name);
+
+    const firestore = firebase.firestore();
+    const publicData = { status: "STARTED" };
+    const privateData = { password };
+    return firestore
+      .collection("chronos")
+      .doc(cleanName)
+      .set({ public: publicData, private: privateData }, { merge: true })
+      .then(res => {})
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  static stopChrono(name, password) {
+    const firestore = firebase.firestore();
+    const publicData = { status: "STOPPED" };
+    const privateData = { password };
+    const cleanName = this.cleanName(name);
+
+    return firestore
+      .collection("chronos")
+      .doc(cleanName)
+      .set({ public: publicData, private: privateData }, { merge: true })
+      .then(res => {})
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  static setChronoOnSnapshot(name, callback, args) {
+    console.log("setChronoOnSnapshot");
+    const cleanName = this.cleanName(name);
+
+    const firestore = firebase.firestore();
+    const unsubscribe = firestore
+      .collection("chronos")
+      .doc(cleanName)
+      .onSnapshot(doc => {
+        console.log("Changes", doc);
+        if (doc.exists) {
+          callback && callback({ document: doc.data(), ...args });
+        } else {
+          console.log("No doc: ", cleanName);
+          callback && callback({ error: true, name });
+        }
+      });
+
+    return unsubscribe;
   }
 }

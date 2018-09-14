@@ -33,15 +33,17 @@
     - Edit title with emojis
     - Edit favicon
 
-- [ ] v 1.7
+- [x] v 1.7
 
   - As a user, when I'm mastering a chrono, I can stop this chrono and stop all others watching
 
-- [ ] v 1.8
+  - As a user, when I'm mastering a chrono, I can start this chrono again and see all others watching it starting again
+
+* [ ] v 1.8
 
   - As a user, I cannot setup an existing chrono if the password does not match
 
-- Others
+* Others
   - [ ] Update favicon
   - [ ] Add head data
 

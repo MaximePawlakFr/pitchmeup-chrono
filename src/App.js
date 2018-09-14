@@ -31,6 +31,7 @@ class App extends Component {
     this.handleDisconnect = this.handleDisconnect.bind(this);
     this.handleSetupMaster = this.handleSetupMaster.bind(this);
     this.handleStatusChange = this.handleStatusChange.bind(this);
+    this.handleChronoSnapshot = this.handleChronoSnapshot.bind(this);
 
     this.unsubscribe = null;
   }
@@ -56,55 +57,71 @@ class App extends Component {
     }
   }
 
-  handleFormSubmit(duration) {
-    this.handleStart({ duration });
-  }
-
-  async start({ duration, startAt }) {
-    const now = await Time.getUTCTime();
-    const localNow = Date.now();
-    const diffTime = localNow - now;
-
-    if (this.state.master && this.state.master.isActive) {
-      FirebaseHelper.setupChrono(
-        this.state.master.name,
-        startAt || now,
-        duration,
-        this.state.master.password
-      );
-    }
+  start({ duration, startAt, diffTime }) {
+    console.log("start", duration, startAt, diffTime);
 
     this.countdown = setInterval(() => {
       this.timer(duration);
     }, 200);
 
-    this.setState({ startAt: startAt || now, diffTime });
-  }
-
-  handleStart(data) {
-    console.log("App handleStart");
-
-    let duration = data.duration;
-    let startAt = null;
-
-    if (data && data.error) {
-      this.setState({ statusText: `no chrono found '${data.name}'` });
-      return;
-    } else if (data && data.public) {
-      startAt =
-        data.public.startAt.seconds * 1000 +
-        data.public.startAt.nanoseconds / 1000;
-      duration = data.public.duration;
-    }
-
-    this.handleStop();
-    this.start({ duration, startAt });
+    this.setState({ startAt, diffTime });
   }
 
   handleStop() {
-    console.log("App handleStop");
+    console.log("App handleStop", this.state);
+
+    if (this.state.master && this.state.master.isActive) {
+      console.log("Stopping chrono");
+
+      FirebaseHelper.stopChrono(
+        this.state.master.name,
+        this.state.master.password
+      );
+    }
 
     this.countdown = clearInterval(this.countdown);
+  }
+
+  handleStart({ document, duration, startAt, diffTime, error, name }) {
+    console.log("App handleStart", document, diffTime);
+
+    let newDuration = duration;
+    let newStartAt = startAt;
+
+    if (error) {
+      this.setState({ statusText: `no chrono found '${name}'` });
+      return;
+    } else if (document && document.public && document.public.startAt) {
+      newStartAt =
+        document.public.startAt.seconds * 1000 +
+        document.public.startAt.nanoseconds / 1000;
+      newDuration = document.public.duration;
+    }
+
+    // if (data.action === "START") {
+    this.handleStop();
+
+    if (this.state.master && this.state.master.isActive) {
+      this.handleSetupMaster(
+        this.state.master.name,
+        newDuration,
+        this.state.master.password
+      );
+    }
+
+    this.start({ duration: newDuration, startAt: newStartAt, diffTime });
+    // } else if (data.action === "STOP") {
+    // this.handleStop();
+    // }
+  }
+
+  async handleFormSubmit(duration) {
+    const now = await Time.getUTCTime();
+    const localNow = Date.now();
+    const diffTime = localNow - now;
+    const startAt = now;
+
+    this.handleStart({ duration, startAt, diffTime });
   }
 
   handleStatusChange(data) {
@@ -113,27 +130,64 @@ class App extends Component {
     this.setState({ status: data && data.status });
   }
 
-  handleConnect(name) {
-    console.log("App handleConnect");
+  async handleConnect(name) {
+    console.log("App handleConnect", name);
 
     this.reset();
 
-    this.unsubscribe = FirebaseHelper.findChrono(name, this.handleStart);
+    const now = await Time.getUTCTime();
+    const localNow = Date.now();
+    const diffTime = localNow - now;
+
+    this.unsubscribe = FirebaseHelper.setChronoOnSnapshot(
+      name,
+      this.handleChronoSnapshot,
+      { diffTime }
+    );
+
     this.setState({ statusText: `connected to '${name}'` });
   }
 
   async handleSetupMaster(name, duration, password) {
-    console.log("App handleSetupMaster");
+    console.log("App handleSetupMaster", name);
 
     this.reset();
 
-    const startAt = await Time.getUTCTime();
-    FirebaseHelper.setupChrono(name, startAt, duration, password);
-    this.unsubscribe = FirebaseHelper.findChrono(name, this.handleStart);
-    this.setState({
-      statusText: `mastering '${name}'`,
-      master: { isActive: true, name, duration, password }
-    });
+    const now = await Time.getUTCTime();
+    const localNow = Date.now();
+    const diffTime = localNow - now;
+    const startAt = now;
+
+    FirebaseHelper.setupChrono(name, startAt, duration, password)
+      .then(() => {
+        return FirebaseHelper.findChrono(name, this.handleStart, { diffTime });
+      })
+      .then(() => {
+        return FirebaseHelper.startChrono(name, password);
+      })
+      .then(() => {
+        this.setState({
+          statusText: `mastering '${name}'`,
+          master: { isActive: true, name, duration, password }
+        });
+
+        this.unsubscribe = FirebaseHelper.setChronoOnSnapshot(
+          name,
+          this.handleChronoSnapshot,
+          { diffTime }
+        );
+      });
+  }
+
+  handleChronoSnapshot({ document, diffTime }) {
+    console.log("handleChronoSnapshot", document, diffTime);
+    if (!document.error && this.state.status === "CONNECTED") {
+      if (document.public.status === "STOPPED") {
+        this.handleStop();
+      } else {
+        this.handleStart({ document, diffTime });
+      }
+    }
   }
 
   handleDisconnect() {
@@ -181,7 +235,7 @@ class App extends Component {
           )}
         </div>
         <div className="status-text center">
-          <span class="bold">Status:</span> {this.state.statusText}
+          <span className="bold">Status:</span> {this.state.statusText}
         </div>
         <NetworkPanel
           onConnect={this.handleConnect}
