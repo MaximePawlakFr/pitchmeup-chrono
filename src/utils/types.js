@@ -5,8 +5,12 @@ const types = {
     MASTERING: "MASTERING"
   },
   CHRONO_STATUS: {
+    CREATED: "CREATED",
     STARTED: "STARTED",
     STOPPED: "STOPPED"
+  },
+  COLLECTIONS: {
+    CHRONOS: "chronos"
   }
 };
 

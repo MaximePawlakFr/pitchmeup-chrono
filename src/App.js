@@ -36,7 +36,7 @@ class App extends Component {
     this.handleStartClicked = this.handleStartClicked.bind(this);
     this.handleStopClicked = this.handleStopClicked.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
-    this.handleDisconnect = this.handleDisconnect.bind(this);
+    this.handleDisconnectClicked = this.handleDisconnectClicked.bind(this);
     this.handleSetupMaster = this.handleSetupMaster.bind(this);
     this.handleStatusChange = this.handleStatusChange.bind(this);
     this.handleChronoSnapshot = this.handleChronoSnapshot.bind(this);
@@ -163,11 +163,9 @@ class App extends Component {
     const localNow = Date.now();
     const diffTime = localNow - now;
 
-    this.unsubscribe = FirebaseHelper.setChronoOnSnapshot(
-      name,
-      this.handleChronoSnapshot,
-      { diffTime }
-    );
+    this.unsubscribe = FirebaseHelper.setChronoOnSnapshot(name, document => {
+      this.handleChronoSnapshot(document, diffTime);
+    });
 
     this.setState({ statusText: `connected to '${name}'` });
   }
@@ -182,11 +180,21 @@ class App extends Component {
     const diffTime = localNow - now;
     const startAt = now;
 
-    FirebaseHelper.setupChrono(name, startAt, duration, password)
+    const chrono = {
+      public: {
+        name,
+        startAt,
+        duration,
+        status: types.CHRONO_STATUS.CREATED
+      },
+      private: {
+        password
+      }
+    };
+
+    FirebaseHelper.setupChrono(chrono)
       .then(() => {
-        return FirebaseHelper.findChrono(name, this.handleStart, { diffTime });
-      })
-      .then(() => {
+        this.handleStart({ document: chrono, diffTime });
         return FirebaseHelper.startChrono(name, password);
       })
       .then(() => {
@@ -198,13 +206,14 @@ class App extends Component {
 
         this.unsubscribe = FirebaseHelper.setChronoOnSnapshot(
           name,
-          this.handleChronoSnapshot,
-          { diffTime }
+          document => {
+            this.handleChronoSnapshot(document, diffTime);
+          }
         );
       });
   }
 
-  handleChronoSnapshot({ document, diffTime }) {
+  handleChronoSnapshot(document, diffTime) {
     console.log("handleChronoSnapshot", document, diffTime);
     if (
       !document.error &&
@@ -218,22 +227,29 @@ class App extends Component {
     }
   }
 
-  handleDisconnect() {
-    this.reset();
-  }
-
-  disconnect() {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-      this.setState({ statusText: "disconnected", master: null });
-    }
-  }
-
   reset() {
     console.log("App reset");
 
     this.stop();
     this.disconnect();
+  }
+
+  handleDisconnectClicked() {
+    this.reset();
+  }
+
+  disconnect() {
+    if (
+      this.state.status === types.NETWORK_STATUS.CONNECTED ||
+      this.state.status === types.NETWORK_STATUS.MASTERING
+    ) {
+      this.unsubscribe();
+      this.setState({
+        statusText: types.NETWORK_STATUS.DISCONNECTED,
+        status: types.NETWORK_STATUS.DISCONNECTED,
+        master: null
+      });
+    }
   }
 
   render() {
@@ -255,7 +271,7 @@ class App extends Component {
         </div>
         <NetworkPanel
           onConnect={this.handleConnect}
-          onDisconnect={this.handleDisconnect}
+          onDisconnect={this.handleDisconnectClicked}
           onSetupMaster={this.handleSetupMaster}
           onStatusChange={this.handleStatusChange}
         />

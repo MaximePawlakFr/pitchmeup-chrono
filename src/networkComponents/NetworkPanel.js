@@ -1,10 +1,12 @@
 import React, { Component } from "react";
+import Utils from "../utils/Utils";
+import types from "../utils/types";
 
 export default class NetworkPanel extends Component {
   constructor() {
     super();
     this.state = {
-      status: "DISCONNECTED"
+      status: types.NETWORK_STATUS.DISCONNECTED
     };
 
     this.handleConnect = this.handleConnect.bind(this);
@@ -23,10 +25,10 @@ export default class NetworkPanel extends Component {
     console.log("handleConnect");
 
     const name = this.chronoNameInput.current.value;
-    const cleanName = name && name.length > 0 && name.trim().toLowerCase();
+    const cleanName = Utils.cleanName(name);
 
-    this.setState({ status: "CONNECTED" });
-    this.props.onStatusChange({ status: "CONNECTED" });
+    this.setState({ status: types.NETWORK_STATUS.CONNECTED });
+    this.props.onStatusChange({ status: types.NETWORK_STATUS.CONNECTED });
     this.props.onConnect(cleanName);
   }
 
@@ -35,14 +37,14 @@ export default class NetworkPanel extends Component {
     console.log("handleSetupMaster");
 
     const name = this.masterNameInput.current.value;
-    const cleanName = name && name.length > 0 && name.trim().toLowerCase();
+    const cleanName = Utils.cleanName(name);
 
     const password = this.masterPasswordInput.current.value;
     const minutes = parseInt(this.minutesInput.current.value || 0, 10);
     const seconds = parseInt(this.secondsInput.current.value || 0, 10);
     const duration = minutes * 60 + seconds;
-    this.setState({ status: "MASTERING" });
-    this.props.onStatusChange({ status: "MASTERING" });
+    this.setState({ status: types.NETWORK_STATUS.MASTERING });
+    this.props.onStatusChange({ status: types.NETWORK_STATUS.MASTERING });
 
     this.props.onSetupMaster(cleanName, duration, password);
   }
@@ -50,8 +52,8 @@ export default class NetworkPanel extends Component {
   handleDisconnect() {
     console.log("handleDisconnect");
 
-    this.setState({ status: "DISCONNECTED" });
-    this.props.onStatusChange({ status: "DISCONNECTED" });
+    this.setState({ status: types.NETWORK_STATUS.DISCONNECTED });
+    this.props.onStatusChange({ status: types.NETWORK_STATUS.DISCONNECTED });
     this.props.onDisconnect();
   }
 
@@ -67,7 +69,7 @@ export default class NetworkPanel extends Component {
             📡
           </span>
         </h2>
-        {this.state.status !== "DISCONNECTED" ? (
+        {this.state.status !== types.NETWORK_STATUS.DISCONNECTED ? (
           <div className="pure-g center">
             <div className="pure-u-1">
               <button
