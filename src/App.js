@@ -9,6 +9,8 @@ import FirebaseHelper from "./utils/FirebaseHelper";
 import Time from "./utils/Time";
 import types from "./utils/types";
 
+import config from "./config";
+
 import Version from "./version/Version";
 
 class App extends Component {
@@ -16,21 +18,23 @@ class App extends Component {
     super();
     this.state = {
       startAt: 0,
-      minutes: 5,
-      seconds: 0,
-      statusText: "disconnected",
+      minutes: config.chrono.default[0].minutes,
+      seconds: config.chrono.default[0].seconds,
+      statusText: types.NETWORK_STATUS.DISCONNECTED,
       status: types.NETWORK_STATUS.DISCONNECTED,
       master: null
     };
-    this.timer = this.timer.bind(this);
+    this.countdownId = null;
+    this.computeTimer = this.computeTimer.bind(this);
     this.start = this.start.bind(this);
     this.reset = this.reset.bind(this);
     this.disconnect = this.disconnect.bind(this);
 
     this.handleStart = this.handleStart.bind(this);
-    this.handleStop = this.handleStop.bind(this);
+    this.stop = this.stop.bind(this);
 
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleStartClicked = this.handleStartClicked.bind(this);
+    this.handleStopClicked = this.handleStopClicked.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
     this.handleDisconnect = this.handleDisconnect.bind(this);
     this.handleSetupMaster = this.handleSetupMaster.bind(this);
@@ -48,33 +52,45 @@ class App extends Component {
     this.reset();
   }
 
-  timer(duration) {
+  computeTimer({ startAt, diffTime, duration }) {
     const now = Date.now();
-    const elapsed = (now - this.state.startAt - this.state.diffTime) / 1000;
+    const elapsed = (now - startAt - diffTime) / 1000;
     const diff = Math.round(duration - elapsed);
+
+    let minutes;
+    let seconds;
     if (diff >= 0) {
-      const seconds = diff % 60;
-      const minutes = Math.floor(diff / 60);
-      this.setState({ minutes, seconds });
-    } else {
-      this.handleStop();
+      seconds = diff % 60;
+      minutes = Math.floor(diff / 60);
     }
+    return {
+      minutes,
+      seconds,
+      diff
+    };
   }
 
   start({ duration, startAt, diffTime }) {
     console.log("start", duration, startAt, diffTime);
-
-    this.countdown = setInterval(() => {
-      this.timer(duration);
+    this.countdownId = setInterval(() => {
+      const timer = this.computeTimer({ duration, startAt, diffTime });
+      if (timer.diff >= 0) {
+        this.setState({ minutes: timer.minutes, seconds: timer.seconds });
+      } else {
+        this.stop();
+      }
     }, 200);
 
     this.setState({ startAt, diffTime });
   }
 
-  handleStop() {
-    console.log("App handleStop", this.state);
+  stop() {
+    console.log("App stop", this.state);
 
-    if (this.state.master && this.state.master.isActive) {
+    if (
+      this.state.master &&
+      this.state.status === types.NETWORK_STATUS.MASTERING
+    ) {
       console.log("Stopping chrono");
 
       FirebaseHelper.stopChrono(
@@ -83,7 +99,7 @@ class App extends Component {
       );
     }
 
-    this.countdown = clearInterval(this.countdown);
+    this.countdownId = clearInterval(this.countdownId);
   }
 
   handleStart({ document, duration, startAt, diffTime, error, name }) {
@@ -103,7 +119,7 @@ class App extends Component {
     }
 
     // if (data.action === "START") {
-    this.handleStop();
+    this.stop();
 
     if (this.state.master && this.state.master.isActive) {
       this.handleSetupMaster(
@@ -115,17 +131,21 @@ class App extends Component {
 
     this.start({ duration: newDuration, startAt: newStartAt, diffTime });
     // } else if (data.action === "STOP") {
-    // this.handleStop();
+    // this.stop();
     // }
   }
 
-  async handleFormSubmit(duration) {
+  async handleStartClicked(duration) {
     const now = await Time.getUTCTime();
     const localNow = Date.now();
     const diffTime = localNow - now;
     const startAt = now;
 
     this.handleStart({ duration, startAt, diffTime });
+  }
+
+  handleStopClicked() {
+    this.stop();
   }
 
   handleStatusChange(data) {
@@ -171,6 +191,7 @@ class App extends Component {
       })
       .then(() => {
         this.setState({
+          status: types.NETWORK_STATUS.MASTERING,
           statusText: `mastering '${name}'`,
           master: { isActive: true, name, duration, password }
         });
@@ -190,7 +211,7 @@ class App extends Component {
       this.state.status === types.NETWORK_STATUS.CONNECTED
     ) {
       if (document.public.status === types.CHRONO_STATUS.STOPPED) {
-        this.handleStop();
+        this.stop();
       } else {
         this.handleStart({ document, diffTime });
       }
@@ -211,7 +232,7 @@ class App extends Component {
   reset() {
     console.log("App reset");
 
-    this.handleStop();
+    this.stop();
     this.disconnect();
   }
 
@@ -222,8 +243,8 @@ class App extends Component {
       <div className="app">
         <div className="flexbox-container">
           <DigitPanel
-            onStart={this.handleFormSubmit}
-            onStop={this.handleStop}
+            onStart={this.handleStartClicked}
+            onStop={this.handleStopClicked}
             minutes={this.state.minutes}
             seconds={this.state.seconds}
             showForms={showForms}

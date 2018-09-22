@@ -8,5 +8,8 @@ export default {
     projectId: "pitchmeup-chrono"
     //   storageBucket: "pitchmeup-chrono.appspot.com",
     //   messagingSenderId: "389398832826"
+  },
+  chrono: {
+    default: [{ minutes: 5, seconds: 0 }, { minutes: 10, seconds: 0 }]
   }
 };
