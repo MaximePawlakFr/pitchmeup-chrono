@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 
-import Digits from "./digitComponents/Digits";
-import DigitForm from "./digitComponents/DigitForm";
+import DigitPanel from "./digitComponents/DigitPanel";
 
 import NetworkPanel from "./networkComponents/NetworkPanel";
 
@@ -217,30 +216,18 @@ class App extends Component {
   }
 
   render() {
+    const showForms = this.state.status !== types.NETWORK_STATUS.CONNECTED;
+
     return (
       <div className="app">
         <div className="flexbox-container">
-          <Digits minutes={this.state.minutes} seconds={this.state.seconds} />
-          {this.state.status !== types.NETWORK_STATUS.CONNECTED ? (
-            <div>
-              <DigitForm
-                onSubmit={this.handleFormSubmit}
-                minutes={5}
-                onStop={this.handleStop}
-                seconds={0}
-                title="Chrono 1"
-              />
-              <DigitForm
-                onSubmit={this.handleFormSubmit}
-                onStop={this.handleStop}
-                minutes={10}
-                seconds={0}
-                title="Chrono 2"
-              />
-            </div>
-          ) : (
-            ""
-          )}
+          <DigitPanel
+            onStart={this.handleFormSubmit}
+            onStop={this.handleStop}
+            minutes={this.state.minutes}
+            seconds={this.state.seconds}
+            showForms={showForms}
+          />
         </div>
         <div className="status-text center">
           <span className="bold">Status:</span> {this.state.statusText}
