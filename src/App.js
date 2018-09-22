@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import "./App.css";
-import Digits from "./Digits";
-import DigitForm from "./DigitForm";
-import Time from "./Time";
-import FirebaseHelper from "./FirebaseHelper";
-import NetworkPanel from "./NetworkPanel";
-import Version from "./Version";
+
+import Digits from "./digitComponents/Digits";
+import DigitForm from "./digitComponents/DigitForm";
+
+import NetworkPanel from "./networkComponents/NetworkPanel";
+
+import FirebaseHelper from "./utils/FirebaseHelper";
+import Time from "./utils/Time";
+import types from "./utils/types";
+
+import Version from "./version/Version";
 
 class App extends Component {
   constructor() {
@@ -15,7 +20,7 @@ class App extends Component {
       minutes: 5,
       seconds: 0,
       statusText: "disconnected",
-      status: "DISCONNECTED",
+      status: types.NETWORK_STATUS.DISCONNECTED,
       master: null
     };
     this.timer = this.timer.bind(this);
@@ -181,8 +186,11 @@ class App extends Component {
 
   handleChronoSnapshot({ document, diffTime }) {
     console.log("handleChronoSnapshot", document, diffTime);
-    if (!document.error && this.state.status === "CONNECTED") {
-      if (document.public.status === "STOPPED") {
+    if (
+      !document.error &&
+      this.state.status === types.NETWORK_STATUS.CONNECTED
+    ) {
+      if (document.public.status === types.CHRONO_STATUS.STOPPED) {
         this.handleStop();
       } else {
         this.handleStart({ document, diffTime });
@@ -213,7 +221,7 @@ class App extends Component {
       <div className="app">
         <div className="flexbox-container">
           <Digits minutes={this.state.minutes} seconds={this.state.seconds} />
-          {this.state.status !== "CONNECTED" ? (
+          {this.state.status !== types.NETWORK_STATUS.CONNECTED ? (
             <div>
               <DigitForm
                 onSubmit={this.handleFormSubmit}
