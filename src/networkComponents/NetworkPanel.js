@@ -24,8 +24,6 @@ export default class NetworkPanel extends Component {
     const name = this.chronoNameInput.current.value;
     const cleanName = Utils.cleanName(name);
 
-    // this.setState({ status: types.NETWORK_STATUS.CONNECTED });
-    // this.props.onStatusChange({ status: types.NETWORK_STATUS.CONNECTED });
     this.props.onConnect(cleanName);
   }
 
@@ -40,17 +38,11 @@ export default class NetworkPanel extends Component {
     const minutes = parseInt(this.minutesInput.current.value || 0, 10);
     const seconds = parseInt(this.secondsInput.current.value || 0, 10);
     const duration = minutes * 60 + seconds;
-    // this.setState({ status: types.NETWORK_STATUS.MASTERING });
-    // this.props.onStatusChange({ status: types.NETWORK_STATUS.MASTERING });
 
     this.props.onSetupMaster(cleanName, duration, password);
   }
 
   handleDisconnect() {
-    console.log("handleDisconnect");
-
-    // this.setState({ status: types.NETWORK_STATUS.DISCONNECTED });
-    // this.props.onStatusChange({ status: types.NETWORK_STATUS.DISCONNECTED });
     this.props.onDisconnect();
   }
 

@@ -39,7 +39,6 @@ class App extends Component {
     this.handleConnect = this.handleConnect.bind(this);
     this.handleDisconnectClicked = this.handleDisconnectClicked.bind(this);
     this.handleSetupMaster = this.handleSetupMaster.bind(this);
-    this.handleStatusChange = this.handleStatusChange.bind(this);
     this.handleChronoSnapshot = this.handleChronoSnapshot.bind(this);
 
     this.unsubscribe = null;
@@ -119,7 +118,6 @@ class App extends Component {
       newDuration = document.public.duration;
     }
 
-    // if (data.action === "START") {
     this.stop();
 
     if (this.state.master && this.state.master.isActive) {
@@ -131,9 +129,6 @@ class App extends Component {
     }
 
     this.start({ duration: newDuration, startAt: newStartAt, diffTime });
-    // } else if (data.action === "STOP") {
-    // this.stop();
-    // }
   }
 
   async handleStartClicked(duration) {
@@ -147,12 +142,6 @@ class App extends Component {
 
   handleStopClicked() {
     this.stop();
-  }
-
-  handleStatusChange(data) {
-    console.log("App handleStatusChange");
-
-    this.setState({ status: data && data.status });
   }
 
   async handleConnect(name) {
@@ -301,13 +290,15 @@ class App extends Component {
         <div className="status-text center">
           <span className="bold">Status:</span> {this.state.statusText}
         </div>
+        <div className="loader">
+          <img src="/loader.gif" alt="Loading..." />
+        </div>
         <NetworkPanel
           errorMessage={this.state.errorMessage}
+          status={this.state.status}
           onConnect={this.handleConnect}
           onDisconnect={this.handleDisconnectClicked}
           onSetupMaster={this.handleSetupMaster}
-          onStatusChange={this.handleStatusChange}
-          status={this.state.status}
         />
         <Version />
       </div>
