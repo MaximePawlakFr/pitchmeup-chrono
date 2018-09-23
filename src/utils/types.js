@@ -11,6 +11,9 @@ const types = {
   },
   COLLECTIONS: {
     CHRONOS: "chronos"
+  },
+  ERRORS: {
+    CHRONO_EXPIRED: "CHRONO_EXPIRED"
   }
 };
 

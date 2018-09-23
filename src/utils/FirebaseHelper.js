@@ -1,6 +1,7 @@
 import firebase from "firebase";
 import config from "../config";
 import types from "./types";
+import ChronoError from "./ChronoError";
 
 export default class FirebaseHelper {
   static init() {
@@ -16,6 +17,27 @@ export default class FirebaseHelper {
       return;
     }
     return newName;
+  }
+
+  static findRunningChrono(name, timeLimit) {
+    const firestore = firebase.firestore();
+    const docRef = firestore.collection(types.COLLECTIONS.CHRONOS).doc(name);
+
+    return docRef.get().then(doc => {
+      if (doc.exists) {
+        const dataPublic = doc.data().public;
+        const deadLine = dataPublic.startAt.seconds + dataPublic.duration;
+
+        if (deadLine < timeLimit) {
+          throw new ChronoError({
+            message: "This named chrono has already expired.",
+            type: types.ERRORS.CHRONO_EXPIRED
+          });
+        }
+      } else {
+        throw new Error("This named chrono does not exist.");
+      }
+    });
   }
 
   static findAndCheckChrono(name, password) {

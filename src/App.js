@@ -163,15 +163,32 @@ class App extends Component {
     const now = await Time.getUTCTime();
     const localNow = Date.now();
     const diffTime = localNow - now;
+    FirebaseHelper.findRunningChrono(name, now / 1000)
+      .then(() => {
+        this.unsubscribe = FirebaseHelper.setChronoOnSnapshot(
+          name,
+          document => {
+            this.handleChronoSnapshot(document, diffTime);
+          }
+        );
 
-    this.unsubscribe = FirebaseHelper.setChronoOnSnapshot(name, document => {
-      this.handleChronoSnapshot(document, diffTime);
-    });
+        this.setState({
+          status: types.NETWORK_STATUS.CONNECTED,
+          statusText: `connected to '${name}'`
+        });
+      })
+      .catch(e => {
+        console.log(e.type);
+        let newState = {
+          errorMessage: e.message
+        };
+        if (e.type && e.type === types.ERRORS.CHRONO_EXPIRED) {
+          newState.minutes = 0;
+          newState.seconds = 0;
+        }
 
-    this.setState({
-      status: types.NETWORK_STATUS.CONNECTED,
-      statusText: `connected to '${name}'`
-    });
+        this.setState(newState);
+      });
   }
 
   async handleSetupMaster(name, duration, password) {
