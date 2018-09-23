@@ -47,8 +47,12 @@
     - Add Loader
 
   - v 1.8.2
+
     - If master disconnects, do not stop chrono.
     - If master clicks on Stop, stop chrono.
+
+  - v 1.8.3
+    - Disable screensaver when a chrono is running.
 
 ---
 

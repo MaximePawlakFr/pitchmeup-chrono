@@ -13,6 +13,7 @@ import config from "./config";
 
 import Version from "./version/Version";
 import Loader from "./utils/Loader";
+import NoSleepHelper from "./utils/NoSleepHelper";
 
 class App extends Component {
   constructor() {
@@ -83,6 +84,7 @@ class App extends Component {
     }, 200);
 
     this.setState({ startAt, diffTime });
+    NoSleepHelper.enable();
   }
 
   stop(stopMasterChrono = false) {
@@ -102,6 +104,7 @@ class App extends Component {
     }
 
     this.countdownId = clearInterval(this.countdownId);
+    NoSleepHelper.disable();
   }
 
   handleStart({ document, duration, startAt, diffTime, error, name }) {
