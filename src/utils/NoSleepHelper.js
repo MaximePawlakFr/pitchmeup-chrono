@@ -1,4 +1,4 @@
-import NoSleep from "nosleep.js";
+import NoSleep from "nosleep.js/dist/NoSleep";
 
 class NoSleepHelper {
   static noSleep = new NoSleep();
