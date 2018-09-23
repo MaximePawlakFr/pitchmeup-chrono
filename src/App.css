@@ -63,3 +63,11 @@
 .button-secondary {
   background: rgb(66, 184, 221); /* this is a light blue */
 }
+
+.message-error {
+  background: rgb(223, 117, 20);
+  margin: 1em 0;
+  padding: 1em;
+  border-radius: 3px;
+  color: #fff;
+}

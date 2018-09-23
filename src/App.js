@@ -22,7 +22,8 @@ class App extends Component {
       seconds: config.chrono.default[0].seconds,
       statusText: types.NETWORK_STATUS.DISCONNECTED,
       status: types.NETWORK_STATUS.DISCONNECTED,
-      master: null
+      master: null,
+      errorMessage: null
     };
     this.countdownId = null;
     this.computeTimer = this.computeTimer.bind(this);
@@ -167,7 +168,10 @@ class App extends Component {
       this.handleChronoSnapshot(document, diffTime);
     });
 
-    this.setState({ statusText: `connected to '${name}'` });
+    this.setState({
+      status: types.NETWORK_STATUS.CONNECTED,
+      statusText: `connected to '${name}'`
+    });
   }
 
   async handleSetupMaster(name, duration, password) {
@@ -210,6 +214,13 @@ class App extends Component {
             this.handleChronoSnapshot(document, diffTime);
           }
         );
+      })
+      .catch(e => {
+        console.error(e);
+        this.setState({
+          errorMessage:
+            "This named chrono already exists and passwords don't match. Please, select anoter name or contact the chrono administrator to get the right password."
+        });
       });
   }
 
@@ -232,6 +243,9 @@ class App extends Component {
 
     this.stop();
     this.disconnect();
+    this.setState({
+      errorMessage: null
+    });
   }
 
   handleDisconnectClicked() {
@@ -270,10 +284,12 @@ class App extends Component {
           <span className="bold">Status:</span> {this.state.statusText}
         </div>
         <NetworkPanel
+          errorMessage={this.state.errorMessage}
           onConnect={this.handleConnect}
           onDisconnect={this.handleDisconnectClicked}
           onSetupMaster={this.handleSetupMaster}
           onStatusChange={this.handleStatusChange}
+          status={this.state.status}
         />
         <Version />
       </div>

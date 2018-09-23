@@ -18,31 +18,24 @@ export default class FirebaseHelper {
     return newName;
   }
 
-  static findChrono(name, callback, args) {
-    console.log("findChrono", name);
-    const cleanName = this.cleanName(name);
+  static findAndCheckChrono(name, password) {
+    console.log("findChrono", name, password);
 
     const firestore = firebase.firestore();
-    const docRef = firestore
-      .collection(types.COLLECTIONS.CHRONOS)
-      .doc(cleanName);
+    const docRef = firestore.collection(types.COLLECTIONS.CHRONOS).doc(name);
 
-    return docRef
-      .get()
-      .then(doc => {
-        console.log("get", doc);
+    return docRef.get().then(doc => {
+      console.log("findAndCheckChrono", doc.data());
 
-        if (doc.exists) {
-          console.log(doc.data());
-          callback && callback({ document: doc.data(), ...args });
-        } else {
-          console.log("No doc: ", name, cleanName);
-          callback && callback({ error: true, name: cleanName });
+      if (doc.exists) {
+        if (doc.data().private.password !== password) {
+          console.log("Passwords don't match.");
+          throw new Error("Passwords don't match.");
         }
-      })
-      .catch(function(error) {
-        console.log("Error getting document:", error);
-      });
+      } else {
+        console.log("No doc: ", name);
+      }
+    });
   }
 
   static setupChrono(data) {
@@ -53,10 +46,14 @@ export default class FirebaseHelper {
     );
 
     const firestore = firebase.firestore();
-    return firestore
-      .collection(types.COLLECTIONS.CHRONOS)
-      .doc(data.public.name)
-      .set(data);
+    const { name } = data.public;
+    const { password } = data.private;
+    return FirebaseHelper.findAndCheckChrono(name, password).then(() => {
+      return firestore
+        .collection(types.COLLECTIONS.CHRONOS)
+        .doc(name)
+        .set(data);
+    });
   }
 
   static startChrono(name, password) {
@@ -87,8 +84,8 @@ export default class FirebaseHelper {
       });
   }
 
-  static setChronoOnSnapshot(name, callback, args) {
-    console.log("setChronoOnSnapshot", name, args);
+  static setChronoOnSnapshot(name, callback) {
+    console.log("setChronoOnSnapshot", name);
 
     const firestore = firebase.firestore();
     const unsubscribe = firestore

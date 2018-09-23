@@ -5,9 +5,6 @@ import types from "../utils/types";
 export default class NetworkPanel extends Component {
   constructor() {
     super();
-    this.state = {
-      status: types.NETWORK_STATUS.DISCONNECTED
-    };
 
     this.handleConnect = this.handleConnect.bind(this);
     this.handleDisconnect = this.handleDisconnect.bind(this);
@@ -27,8 +24,8 @@ export default class NetworkPanel extends Component {
     const name = this.chronoNameInput.current.value;
     const cleanName = Utils.cleanName(name);
 
-    this.setState({ status: types.NETWORK_STATUS.CONNECTED });
-    this.props.onStatusChange({ status: types.NETWORK_STATUS.CONNECTED });
+    // this.setState({ status: types.NETWORK_STATUS.CONNECTED });
+    // this.props.onStatusChange({ status: types.NETWORK_STATUS.CONNECTED });
     this.props.onConnect(cleanName);
   }
 
@@ -43,8 +40,8 @@ export default class NetworkPanel extends Component {
     const minutes = parseInt(this.minutesInput.current.value || 0, 10);
     const seconds = parseInt(this.secondsInput.current.value || 0, 10);
     const duration = minutes * 60 + seconds;
-    this.setState({ status: types.NETWORK_STATUS.MASTERING });
-    this.props.onStatusChange({ status: types.NETWORK_STATUS.MASTERING });
+    // this.setState({ status: types.NETWORK_STATUS.MASTERING });
+    // this.props.onStatusChange({ status: types.NETWORK_STATUS.MASTERING });
 
     this.props.onSetupMaster(cleanName, duration, password);
   }
@@ -52,8 +49,8 @@ export default class NetworkPanel extends Component {
   handleDisconnect() {
     console.log("handleDisconnect");
 
-    this.setState({ status: types.NETWORK_STATUS.DISCONNECTED });
-    this.props.onStatusChange({ status: types.NETWORK_STATUS.DISCONNECTED });
+    // this.setState({ status: types.NETWORK_STATUS.DISCONNECTED });
+    // this.props.onStatusChange({ status: types.NETWORK_STATUS.DISCONNECTED });
     this.props.onDisconnect();
   }
 
@@ -69,7 +66,12 @@ export default class NetworkPanel extends Component {
             📡
           </span>
         </h2>
-        {this.state.status !== types.NETWORK_STATUS.DISCONNECTED ? (
+        {this.props.errorMessage ? (
+          <p class="message-error">{this.props.errorMessage}</p>
+        ) : (
+          ""
+        )}
+        {this.props.status !== types.NETWORK_STATUS.DISCONNECTED ? (
           <div className="pure-g center">
             <div className="pure-u-1">
               <button
