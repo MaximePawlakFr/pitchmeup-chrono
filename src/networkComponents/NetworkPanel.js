@@ -67,7 +67,7 @@ export default class NetworkPanel extends Component {
           </span>
         </h2>
         {this.props.errorMessage ? (
-          <p class="message-error">{this.props.errorMessage}</p>
+          <p className="message-error">{this.props.errorMessage}</p>
         ) : (
           ""
         )}

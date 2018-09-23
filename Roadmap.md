@@ -37,9 +37,10 @@
   - As a user, when I'm mastering a chrono, I can stop this chrono and stop all others watching
   - As a user, when I'm mastering a chrono, I can start this chrono again and see all others watching it starting again
 
-* [ ] v 1.8
+* [x] v 1.8
 
   - As a user, I cannot setup an existing chrono if the password does not match
+  - If a chrono is 5h, it can be reset.
 
 ---
 

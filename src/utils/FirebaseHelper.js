@@ -19,27 +19,21 @@ export default class FirebaseHelper {
   }
 
   static findAndCheckChrono(name, password) {
-    console.log("findChrono", name, password);
-
     const firestore = firebase.firestore();
     const docRef = firestore.collection(types.COLLECTIONS.CHRONOS).doc(name);
 
     return docRef.get().then(doc => {
-      console.log("findAndCheckChrono", doc.data());
-
       if (doc.exists) {
         if (doc.data().private.password !== password) {
-          console.log("Passwords don't match.");
-          throw new Error("Passwords don't match.");
+          throw new Error(
+            "This named chrono already exists and this password doesn't match. Please, select anoter name or contact the chrono administrator to get the right password."
+          );
         }
-      } else {
-        console.log("No doc: ", name);
       }
     });
   }
 
   static setupChrono(data) {
-    console.log("setupChrono", data);
     data.public.startAt = new firebase.firestore.Timestamp(
       Math.round(data.public.startAt / 1000),
       0
@@ -57,8 +51,6 @@ export default class FirebaseHelper {
   }
 
   static startChrono(name, password) {
-    console.log("startChrono", name);
-
     const firestore = firebase.firestore();
     const publicData = { status: types.CHRONO_STATUS.STARTED };
     const privateData = { password };
@@ -85,8 +77,6 @@ export default class FirebaseHelper {
   }
 
   static setChronoOnSnapshot(name, callback) {
-    console.log("setChronoOnSnapshot", name);
-
     const firestore = firebase.firestore();
     const unsubscribe = firestore
       .collection("chronos")

@@ -217,9 +217,10 @@ class App extends Component {
       })
       .catch(e => {
         console.error(e);
+        console.log(e);
+
         this.setState({
-          errorMessage:
-            "This named chrono already exists and passwords don't match. Please, select anoter name or contact the chrono administrator to get the right password."
+          errorMessage: e.message
         });
       });
   }
