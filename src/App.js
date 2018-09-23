@@ -85,12 +85,13 @@ class App extends Component {
     this.setState({ startAt, diffTime });
   }
 
-  stop() {
+  stop(stopMasterChrono = false) {
     console.log("App stop", this.state);
 
     if (
       this.state.master &&
-      this.state.status === types.NETWORK_STATUS.MASTERING
+      this.state.status === types.NETWORK_STATUS.MASTERING &&
+      stopMasterChrono
     ) {
       console.log("Stopping chrono");
 
@@ -142,7 +143,8 @@ class App extends Component {
   }
 
   handleStopClicked() {
-    this.stop();
+    const stopMasterChrono = true;
+    this.stop(stopMasterChrono);
   }
 
   async handleConnect(name) {

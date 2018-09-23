@@ -43,7 +43,12 @@
   - If a chrono is done since 3h, it can be reset.
 
   - v 1.8.1
+
     - Add Loader
+
+  - v 1.8.2
+    - If master disconnects, do not stop chrono.
+    - If master clicks on Stop, stop chrono.
 
 ---
 

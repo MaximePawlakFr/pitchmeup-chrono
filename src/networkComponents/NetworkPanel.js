@@ -19,7 +19,6 @@ export default class NetworkPanel extends Component {
 
   handleConnect(event) {
     event.preventDefault();
-    console.log("handleConnect");
 
     const name = this.chronoNameInput.current.value;
     const cleanName = Utils.cleanName(name);
@@ -29,7 +28,6 @@ export default class NetworkPanel extends Component {
 
   handleSetupMaster(event) {
     event.preventDefault();
-    console.log("handleSetupMaster");
 
     const name = this.masterNameInput.current.value;
     const cleanName = Utils.cleanName(name);
