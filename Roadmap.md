@@ -40,7 +40,7 @@
 * [x] v 1.8
 
   - As a user, I cannot setup an existing chrono if the password does not match
-  - If a chrono is 5h, it can be reset.
+  - If a chrono is done since 3h, it can be reset.
 
 ---
 
