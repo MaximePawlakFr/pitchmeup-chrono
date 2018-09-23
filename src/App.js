@@ -12,6 +12,7 @@ import types from "./utils/types";
 import config from "./config";
 
 import Version from "./version/Version";
+import Loader from "./utils/Loader";
 
 class App extends Component {
   constructor() {
@@ -145,13 +146,13 @@ class App extends Component {
   }
 
   async handleConnect(name) {
-    console.log("App handleConnect", name);
-
     this.reset();
 
+    this.setState({ status: types.NETWORK_STATUS.CONNECTING });
     const now = await Time.getUTCTime();
     const localNow = Date.now();
     const diffTime = localNow - now;
+
     FirebaseHelper.findRunningChrono(name, now / 1000)
       .then(() => {
         this.unsubscribe = FirebaseHelper.setChronoOnSnapshot(
@@ -169,7 +170,8 @@ class App extends Component {
       .catch(e => {
         console.log(e.type);
         let newState = {
-          errorMessage: e.message
+          errorMessage: e.message,
+          status: types.CHRONO_STATUS.DISCONNECTED
         };
         if (e.type && e.type === types.ERRORS.CHRONO_EXPIRED) {
           newState.minutes = 0;
@@ -181,9 +183,8 @@ class App extends Component {
   }
 
   async handleSetupMaster(name, duration, password) {
-    console.log("App handleSetupMaster", name);
-
     this.reset();
+    this.setState({ status: types.NETWORK_STATUS.CONNECTING });
 
     const now = await Time.getUTCTime();
     const localNow = Date.now();
@@ -226,7 +227,8 @@ class App extends Component {
         console.log(e);
 
         this.setState({
-          errorMessage: e.message
+          errorMessage: e.message,
+          status: types.CHRONO_STATUS.DISCONNECTED
         });
       });
   }
@@ -265,12 +267,12 @@ class App extends Component {
       this.state.status === types.NETWORK_STATUS.MASTERING
     ) {
       this.unsubscribe();
-      this.setState({
-        statusText: types.NETWORK_STATUS.DISCONNECTED,
-        status: types.NETWORK_STATUS.DISCONNECTED,
-        master: null
-      });
     }
+    this.setState({
+      statusText: types.NETWORK_STATUS.DISCONNECTED,
+      status: types.NETWORK_STATUS.DISCONNECTED,
+      master: null
+    });
   }
 
   render() {
@@ -290,9 +292,10 @@ class App extends Component {
         <div className="status-text center">
           <span className="bold">Status:</span> {this.state.statusText}
         </div>
-        <div className="loader">
+        <Loader show={this.state.status === types.NETWORK_STATUS.CONNECTING} />
+        {/* <div className="loader">
           <img src="/loader.gif" alt="Loading..." />
-        </div>
+        </div> */}
         <NetworkPanel
           errorMessage={this.state.errorMessage}
           status={this.state.status}

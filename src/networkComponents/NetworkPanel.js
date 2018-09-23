@@ -47,6 +47,9 @@ export default class NetworkPanel extends Component {
   }
 
   render() {
+    const showDisconnectButton =
+      this.props.status === types.NETWORK_STATUS.MASTERING ||
+      this.props.status === types.NETWORK_STATUS.CONNECTED;
     return (
       <div className="network-panel">
         <h2>
@@ -63,7 +66,7 @@ export default class NetworkPanel extends Component {
         ) : (
           ""
         )}
-        {this.props.status !== types.NETWORK_STATUS.DISCONNECTED ? (
+        {showDisconnectButton ? (
           <div className="pure-g center">
             <div className="pure-u-1">
               <button
