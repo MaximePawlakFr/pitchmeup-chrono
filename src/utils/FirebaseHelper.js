@@ -24,10 +24,17 @@ export default class FirebaseHelper {
 
     return docRef.get().then(doc => {
       if (doc.exists) {
+        const dataPublic = doc.data().public;
         if (doc.data().private.password !== password) {
-          throw new Error(
-            "This named chrono already exists and this password doesn't match. Please, select anoter name or contact the chrono administrator to get the right password."
-          );
+          const deadLine =
+            dataPublic.startAt.seconds + dataPublic.duration + 3 * 3600;
+          const now = Date.now() / 1000;
+
+          if (deadLine > now) {
+            throw new Error(
+              "This named chrono already exists and this password doesn't match. Please, select another name or contact the chrono administrator to get the right password."
+            );
+          }
         }
       }
     });
