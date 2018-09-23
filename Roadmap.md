@@ -42,6 +42,9 @@
   - As a user, I cannot setup an existing chrono if the password does not match
   - If a chrono is done since 3h, it can be reset.
 
+  - v 1.8.1
+    - Add Loader
+
 ---
 
 # Draft
